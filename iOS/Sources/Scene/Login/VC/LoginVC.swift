@@ -6,4 +6,8 @@
 //  Copyright © 2022 com.DMS. All rights reserved.
 //
 
-import Foundation
+import UIKit
+
+class LoginVC: BaseVC<LoginReactor> {
+
+}
