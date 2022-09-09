@@ -9,13 +9,17 @@ import UIKit
 import ReactorKit
 
 class BaseVC<T: Reactor>: UIViewController {
+
+    typealias NextStapColor = NextStapAsset.Color
+    typealias NextStapImage = NextStapAsset.Assets
+
     let bound = UIScreen.main.bounds
     var disposeBag: DisposeBag = .init()
 
     @available(*, unavailable)
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
+        view.backgroundColor = NextStapColor.backGroundColor.color
         addView()
         setLayout()
         configureVC()
