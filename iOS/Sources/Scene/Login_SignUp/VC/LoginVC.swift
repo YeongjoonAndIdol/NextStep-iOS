@@ -10,9 +10,11 @@ import UIKit
 
 class LoginVC: BaseVC<LoginReactor> {
 
-    private let logoImage = UIImageView().then {
-        $0.image = NextStapImage.loginLogo.image
-    }
+//    private let logoImage = UIImageView().then {
+//        $0.image = NextStapImage.loginLogo.image
+//    }
+
+    private let logoImage = UIImageView()
 
     private let logoLabel = UILabel().then {
         $0.text = "Next Stap"
@@ -30,7 +32,7 @@ class LoginVC: BaseVC<LoginReactor> {
         $0.setTitleColor(NextStapColor.surfaceColor.color, for: .normal)
         $0.setTitle("로그인", for: .normal)
         $0.titleLabel?.font = .systemFont(ofSize: 16, weight: .semibold)
-        $0.backgroundColor = NextStapColor.subColor3.color
+        $0.backgroundColor = NextStapColor.buttonDisabledColor.color
         $0.layer.cornerRadius = 10
     }
 
@@ -107,9 +109,10 @@ class LoginVC: BaseVC<LoginReactor> {
         }
 
         logoLabel.snp.makeConstraints {
-            $0.top.equalTo(logoImage.snp.bottom)
+//            $0.top.equalTo(logoImage.snp.bottom)
             $0.left.equalTo(33)
             $0.height.equalTo(35)
+            $0.bottom.equalTo(idTextFiledBackView.snp.top).offset(-20)
         }
 
         loginButton.snp.makeConstraints {
