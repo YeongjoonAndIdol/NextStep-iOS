@@ -95,7 +95,7 @@ class LoginVC: BaseVC<LoginReactor> {
         passwordTextFiled.isSecureTextEntry = true
 
         loginButton.rx.tap.bind { _ in
-            self.navigationController?.pushViewController(UIViewController(), animated: true)
+            self.navigationController?.pushViewController(SignUpVC(reactor: SignUpReactor()), animated: true)
         }.disposed(by: disposeBag)
 
     }
