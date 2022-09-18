@@ -36,6 +36,10 @@ class LoginVC: BaseVC<LoginReactor> {
         $0.layer.cornerRadius = 10
     }
 
+    private let loginBottomLine = UIView().then {
+        $0.backgroundColor = NextStapColor.gary2.color
+    }
+
     private let signInGoogleButton = UIButton().then {
         $0.setTitleColor(NextStapColor.onSurfaceColor.color, for: .normal)
         $0.setTitle("Sign in with Google", for: .normal)
@@ -48,6 +52,12 @@ class LoginVC: BaseVC<LoginReactor> {
         $0.image = NextStapImage.googleLogo.image
     }
 
+    private let signUpButton = UIButton().then {
+        $0.setTitleColor(NextStapColor.textButtonDisabledColor.color, for: .normal)
+        $0.setTitle("아직 회원이 아니신가요? 회원가입하기", for: .normal)
+        $0.titleLabel?.font = .systemFont(ofSize: 14, weight: .semibold)
+    }
+
      override func addView() {
 
         [
@@ -56,7 +66,9 @@ class LoginVC: BaseVC<LoginReactor> {
             idTextFiledBackView,
             passwordTextFiledBackView,
             loginButton,
-            signInGoogleButton
+            loginBottomLine,
+            signInGoogleButton,
+            signUpButton
         ]
              .forEach {
             view.addSubview($0)
@@ -94,7 +106,7 @@ class LoginVC: BaseVC<LoginReactor> {
 
         passwordTextFiled.isSecureTextEntry = true
 
-        loginButton.rx.tap.bind { _ in
+        signUpButton.rx.tap.bind { _ in
             self.navigationController?.pushViewController(SignUpVC(reactor: SignUpReactor()), animated: true)
         }.disposed(by: disposeBag)
 
@@ -140,8 +152,14 @@ class LoginVC: BaseVC<LoginReactor> {
             }
         }
 
+        loginBottomLine.snp.makeConstraints {
+            $0.top.equalTo(loginButton.snp.bottom).offset(38)
+            $0.height.equalTo(1)
+            $0.leading.trailing.equalTo(view).inset(24)
+        }
+
         signInGoogleButton.snp.makeConstraints {
-            $0.top.equalTo(loginButton.snp.bottom).offset(36)
+            $0.top.equalTo(loginBottomLine.snp.bottom).offset(32)
             $0.leading.trailing.equalTo(view).inset(16)
             $0.height.equalTo(48)
         }
@@ -150,6 +168,12 @@ class LoginVC: BaseVC<LoginReactor> {
             $0.left.equalTo(20)
             $0.centerY.equalTo(signInGoogleButton)
             $0.width.height.equalTo(50)
+        }
+
+        signUpButton.snp.makeConstraints {
+            $0.bottom.equalTo(view.safeAreaLayoutGuide).offset(-36)
+            $0.height.equalTo(22)
+            $0.centerX.equalTo(view)
         }
 
     }
