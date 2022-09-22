@@ -13,7 +13,10 @@ class TabBarVC: UITabBarController {
         super.viewWillAppear(animated)
 
         let tabOne = HomeVC(reactor: HomeReactor())
-        let tabOneBarItem = UITabBarItem(title: "홈", image: UIImage(systemName: "house"), tag: 1)
+        let tabOneBarItem = UITabBarItem(
+            title: "홈",
+            image: UIImage(systemName: "house"),
+            tag: 1)
 
         tabOne.tabBarItem = tabOneBarItem
 
@@ -42,6 +45,7 @@ class TabBarVC: UITabBarController {
         tabFou.tabBarItem = tabFouBarItem4
 
         self.tabBar.tintColor = NextStapAsset.Color.mainColor.color
+        self.tabBar.unselectedItemTintColor = NextStapAsset.Color.textButtonDisabledColor.color
 
         self.viewControllers = [tabOne, tabTwo, tabThr, tabFou]
     }
