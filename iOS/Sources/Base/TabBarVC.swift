@@ -6,4 +6,44 @@
 //  Copyright © 2022 com.DMS. All rights reserved.
 //
 
-import Foundation
+import UIKit
+
+class TabBarVC: UITabBarController {
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        let tabOne = HomeVC(reactor: HomeReactor())
+        let tabOneBarItem = UITabBarItem(title: "홈", image: UIImage(systemName: "house"), tag: 1)
+
+        tabOne.tabBarItem = tabOneBarItem
+
+        let tabTwo = RankVC(reactor: RankReactor())
+        let tabTwoBarItem2 = UITabBarItem(
+            title: "순위",
+            image: NextStapAsset.Assets.rankIcon.image,
+            tag: 2)
+
+        tabTwo.tabBarItem = tabTwoBarItem2
+
+        let tabThr = SuggestVC(reactor: SuggestReactor())
+        let tabThrBarItem3 = UITabBarItem(
+            title: "추천",
+            image: NextStapAsset.Assets.suggestIcon.image,
+            tag: 3)
+
+        tabThr.tabBarItem = tabThrBarItem3
+
+        let tabFou = UIViewController()
+        let tabFouBarItem4 = UITabBarItem(
+            title: "마이페이지",
+            image: UIImage(systemName: "person.crop.circle.fill"),
+            tag: 4)
+
+        tabFou.tabBarItem = tabFouBarItem4
+
+        self.tabBar.tintColor = NextStapAsset.Color.mainColor.color
+
+        self.viewControllers = [tabOne, tabTwo, tabThr, tabFou]
+    }
+
+}
