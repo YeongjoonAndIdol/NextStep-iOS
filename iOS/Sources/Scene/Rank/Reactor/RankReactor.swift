@@ -1,5 +1,5 @@
 //
-//  SuggestReactor.swift
+//  RankReactor.swift
 //  Next-Stap
 //
 //  Created by 김대희 on 2022/09/23.
@@ -8,7 +8,7 @@
 
 import ReactorKit
 
-class SuggestReactor: Reactor {
+class RankReactor: Reactor {
 
     private let disposeBag: DisposeBag = .init()
     let initialState: State
