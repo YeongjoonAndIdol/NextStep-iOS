@@ -18,7 +18,7 @@ public extension TargetDependency.SPM {
     static let Kingfisher = TargetDependency.package(product: "Kingfisher")
     static let ReactorKit = TargetDependency.package(product: "ReactorKit")
     static let TextFieldEffects = TargetDependency.package(product: "TextFieldEffects")
-
+    static let Tabman = TargetDependency.package(product: "Tabman")
 }
 
 public extension Package {
@@ -65,5 +65,9 @@ public extension Package {
     static let TextFieldEffects = Package.remote(
         url: "https://github.com/raulriera/TextFieldEffects.git",
         requirement: .upToNextMajor(from: "1.7.0")
+    )
+    static let Tabman = Package.remote(
+        url: "https://github.com/uias/Tabman.git",
+        requirement: .upToNextMajor(from: "2.13.0")
     )
 }

@@ -13,7 +13,8 @@ let project = Project.dynamicFramework(
         .DropDown,
         .Loaf,
         .Kingfisher,
-        .ReactorKit
+        .ReactorKit,
+        .Tabman
     ],
     deploymentTarget: .iOS(targetVersion: "14.0", devices: [.iphone, .ipad]),
     dependencies: [
@@ -28,6 +29,7 @@ let project = Project.dynamicFramework(
         .SPM.DropDown,
         .SPM.Loaf,
         .SPM.Kingfisher,
-        .SPM.ReactorKit
+        .SPM.ReactorKit,
+        .SPM.Tabman
     ]
 )
