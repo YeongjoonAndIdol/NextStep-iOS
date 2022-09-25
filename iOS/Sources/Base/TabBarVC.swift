@@ -12,7 +12,7 @@ class TabBarVC: UITabBarController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        let tabOne = HomeVC(reactor: HomeReactor())
+        let tabOne = BaseNC(rootViewController: HomeVC(reactor: HomeReactor()))
         let tabOneBarItem = UITabBarItem(
             title: "홈",
             image: UIImage(systemName: "house"),
