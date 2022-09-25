@@ -8,6 +8,6 @@
 
 import UIKit
 
-class CompleteQuestVC: UITabBarController {
+class CompleteQuestVC: UIViewController {
 
 }
