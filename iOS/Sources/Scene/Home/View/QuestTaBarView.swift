@@ -27,11 +27,17 @@ class QuestTaBarView: TabmanViewController {
         $0.backgroundColor = NextStapColor.gary3.color
     }
 
+    private let bottomLine = UIView().then {
+        $0.backgroundColor = NextStapColor.gary3.color
+    }
+
     override func viewDidLoad() {
 
-        super.viewDidLoad()
+        [backLine, bottomLine].forEach {
+            view.addSubview($0)
+        }
 
-        view.addSubview(backLine)
+        super.viewDidLoad()
 
         [VC1, VC2, VC3].forEach {
             viewControllers.append($0)
@@ -67,6 +73,11 @@ class QuestTaBarView: TabmanViewController {
             $0.leading.trailing.equalToSuperview()
             $0.top.equalTo(bar.frame.height - 1)
             $0.height.equalTo(1)
+        }
+
+        bottomLine.snp.makeConstraints {
+            $0.leading.trailing.bottom.equalToSuperview()
+            $0.height.equalTo(2)
         }
 
     }
