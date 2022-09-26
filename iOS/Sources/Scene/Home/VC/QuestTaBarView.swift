@@ -18,12 +18,21 @@ class QuestTaBarView: TabmanViewController {
     typealias NextStapColor = NextStapAsset.Color
 
     private var viewControllers: [UIViewController] = []
+
     private let VC1 = AllQuestVC()
     private let VC2 = InCompleteQuestVC()
     private let VC3 = CompleteQuestVC()
 
+    private let backLine = UIView().then {
+        $0.backgroundColor = NextStapColor.gary3.color
+    }
+
     override func viewDidLoad() {
+
         super.viewDidLoad()
+
+        view.addSubview(backLine)
+
         [VC1, VC2, VC3].forEach {
             viewControllers.append($0)
         }
@@ -32,11 +41,13 @@ class QuestTaBarView: TabmanViewController {
 
         // Create bar
         let bar = TMBar.ButtonBar()
+
         bar.backgroundView.style = .clear
+
         bar.layout.transitionStyle = .snap
         bar.layout.alignment = .centerDistributed
-        bar.layout.contentMode = .fit
-        bar.layout.contentInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+        bar.layout.contentMode = .intrinsic
+        bar.layout.interButtonSpacing = view.bounds.width / 6
 
         bar.indicator.weight = .custom(value: 1)
         bar.indicator.overscrollBehavior = .none
@@ -51,6 +62,13 @@ class QuestTaBarView: TabmanViewController {
 
         // Add to view
         addBar(bar, dataSource: self, at: .top)
+
+        backLine.snp.makeConstraints {
+            $0.leading.trailing.equalToSuperview()
+            $0.top.equalTo(bar.frame.height - 1)
+            $0.height.equalTo(1)
+        }
+
     }
 }
 
