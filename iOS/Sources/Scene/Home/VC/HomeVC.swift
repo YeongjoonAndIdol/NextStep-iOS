@@ -16,8 +16,13 @@ class HomeVC: BaseVC<HomeReactor> {
         $0.font = .systemFont(ofSize: 22, weight: .semibold)
     }
 
-    private let addButton = UIButton()
-    private let achievementButton = UIButton()
+    private let addButton = UIButton().then {
+        $0.setImage(NextStapImage.addButtonIcon.image, for: .normal)
+    }
+
+    private let achievementButton = UIButton().then {
+        $0.setImage(NextStapImage.trandButtonIcon.image, for: .normal)
+    }
 
     private let questContainerView = UIView()
     private let questTabView = QuestTaBarView()
