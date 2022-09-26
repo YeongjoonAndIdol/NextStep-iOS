@@ -12,6 +12,9 @@ import Then
 
 class BaseTC: UITableViewCell {
 
+    typealias NextStapColor = NextStapAsset.Color
+    typealias NextStapImage = NextStapAsset.Assets
+
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         self.addView()
