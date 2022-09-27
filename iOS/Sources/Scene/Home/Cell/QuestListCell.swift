@@ -21,6 +21,9 @@ class QuestListCell: BaseTC {
         [titleLabel, checkButton].forEach {
             contentView.addSubview($0)
         }
+        titleLabel.text = "영준이 때리기 + 상현이 조지기"
+        contentView.backgroundColor = NextStapColor.backGroundColor.color
+
     }
 
     override func setLayout() {
@@ -31,7 +34,7 @@ class QuestListCell: BaseTC {
         }
 
         checkButton.snp.makeConstraints {
-            $0.right.equalTo(40)
+            $0.right.equalTo(-40)
             $0.height.width.equalTo(24)
             $0.centerY.equalTo(contentView)
         }
