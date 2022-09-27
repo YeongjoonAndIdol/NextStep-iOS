@@ -62,7 +62,7 @@ class HomeVC: BaseVC<HomeReactor> {
         questTabView.view.snp.makeConstraints {
             $0.leading.trailing.equalToSuperview()
             $0.top.equalTo(titleLabel.snp.bottom).offset(20)
-            $0.bottom.equalTo(view.snp.centerY).offset(126)
+            $0.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-195)
         }
 
     }
