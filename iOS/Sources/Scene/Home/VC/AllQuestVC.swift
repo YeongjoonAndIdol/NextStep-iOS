@@ -22,4 +22,29 @@ class AllQuestVC: UIViewController {
         $0.keyboardDismissMode = .onDrag
         $0.register(QuestListCell.self, forCellReuseIdentifier: "PostCell")
     }
+
+    override func viewDidLoad() {
+
+        [
+            titleLabel,
+            tableView
+        ].forEach {
+            view.addSubview($0)
+        }
+        titleLabel.text = "전체 퀘스트 | 6 개"
+        
+        tableView.delegate = self
+        tableView.dataSource = self
+
+        titleLabel.snp.makeConstraints {
+            $0.top.equalTo(view.safeAreaLayoutGuide).offset(30)
+            $0.left.equalTo(40)
+            $0.height.equalTo(28)
+        }
+
+        tableView.snp.makeConstraints {
+            $0.leading.trailing.bottom.equalToSuperview()
+            $0.top.equalTo(view.safeAreaLayoutGuide).offset(76)
+        }
+    }
 }
