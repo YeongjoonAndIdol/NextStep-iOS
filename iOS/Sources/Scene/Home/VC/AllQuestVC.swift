@@ -12,7 +12,6 @@ import Then
 
 class AllQuestVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
-    // TODO: 나중에 지울 예정
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 6
     }
@@ -42,7 +41,7 @@ class AllQuestVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
             view.addSubview($0)
         }
         titleLabel.text = "전체 퀘스트 | 6 개"
-        
+
         tableView.delegate = self
         tableView.dataSource = self
 
