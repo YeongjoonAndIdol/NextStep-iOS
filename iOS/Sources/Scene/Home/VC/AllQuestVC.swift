@@ -10,7 +10,17 @@ import UIKit
 import SnapKit
 import Then
 
-class AllQuestVC: UIViewController {
+class AllQuestVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
+
+    // TODO: 나중에 지울 예정
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 6
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        return QuestListCell()
+    }
+
     private let titleLabel = UILabel().then {
         $0.textColor = NextStapAsset.Color.onSurfaceColor.color
         $0.font = .systemFont(ofSize: 16, weight: .semibold)
