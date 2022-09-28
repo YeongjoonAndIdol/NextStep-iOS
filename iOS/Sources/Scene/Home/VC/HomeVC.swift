@@ -27,17 +27,71 @@ class HomeVC: BaseVC<HomeReactor> {
     private let questContainerView = UIView()
     private let questTabView = QuestTaBarView()
 
+    private let goalTitleLabel = UILabel().then {
+        $0.textColor = NextStapColor.onSurfaceColor.color
+        $0.font = .systemFont(ofSize: 16, weight: .semibold)
+        $0.numberOfLines = 0
+        $0.lineBreakMode = .byWordWrapping
+    }
+
+    private let goalProgressView = UIProgressView().then {
+        $0.progressTintColor = NextStapColor.mainColor.color
+        $0.trackTintColor = NextStapColor.gary4.color
+        $0.clipsToBounds = true
+        $0.layer.cornerRadius = 6
+        $0.layer.sublayers![1].cornerRadius = 6 // 뒤에 있는 회색 track
+        $0.subviews[1].clipsToBounds = true
+    }
+
+    var paragraphStyle = NSMutableParagraphStyle().then {
+        $0.lineHeightMultiple = 1.36
+    }
+
+    private let goalBottomLabel1 = UILabel()
+    private let goalBottomLabel2 = UILabel()
+
     override func addView() {
         [
             titleLabel,
             addButton,
             achievementButton,
-            questContainerView
+            questContainerView,
+            goalTitleLabel,
+            goalProgressView,
+            goalBottomLabel1,
+            goalBottomLabel2
         ].forEach {
             view.addSubview($0)
         }
         addChild(questTabView)
         view.addSubview(questTabView.view)
+
+        let goalPercent = 50 // 추후 변경 예정
+
+        goalTitleLabel.text = "오늘 퀘스트\n\(goalPercent)% 성공하셨습니다!"
+
+        let fullText = goalTitleLabel.text ?? ""
+        let attribtuedString = NSMutableAttributedString(string: fullText)
+
+        let range = (fullText as NSString).range(of: "\(goalPercent)%")
+        let fullRange = (fullText as NSString).range(of: goalTitleLabel.text!)
+
+        attribtuedString.addAttributes([NSAttributedString.Key.kern: -0.41,
+                                        NSAttributedString.Key.paragraphStyle: paragraphStyle],
+                                       range: fullRange)
+        attribtuedString.addAttribute(.foregroundColor,
+                                        value: NextStapColor.mainColor.color,
+                                        range: range)
+
+        goalTitleLabel.attributedText = attribtuedString
+
+        [goalBottomLabel1, goalBottomLabel2].forEach {
+            $0.textColor = NextStapColor.mainColor.color
+            $0.font = .systemFont(ofSize: 10, weight: .semibold)
+        }
+        goalBottomLabel1.text = "0%"
+        goalBottomLabel2.text = "100%"
+        goalProgressView.setProgress(Float(Double(goalPercent) * 0.01), animated: true)
     }
 
     override func setLayout() {
@@ -65,5 +119,26 @@ class HomeVC: BaseVC<HomeReactor> {
             $0.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-195)
         }
 
+        goalTitleLabel.snp.makeConstraints {
+            $0.bottom.equalTo(view.safeAreaLayoutGuide).offset(-120)
+            $0.left.equalTo(40)
+        }
+
+        goalProgressView.snp.makeConstraints {
+            $0.leading.trailing.equalTo(view).inset(40)
+            $0.bottom.equalTo(view.safeAreaLayoutGuide).offset(-80)
+            $0.height.equalTo(12)
+        }
+
+        goalBottomLabel1.snp.makeConstraints {
+            $0.leading.equalTo(goalProgressView.snp.leading)
+            $0.top.equalTo(goalProgressView.snp.bottom).offset(4)
+            $0.height.equalTo(18)
+        }
+        goalBottomLabel2.snp.makeConstraints {
+            $0.trailing.equalTo(goalProgressView.snp.trailing)
+            $0.top.equalTo(goalProgressView.snp.bottom).offset(4)
+            $0.height.equalTo(18)
+        }
     }
 }
