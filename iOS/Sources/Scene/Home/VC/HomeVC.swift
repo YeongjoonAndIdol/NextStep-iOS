@@ -50,6 +50,14 @@ class HomeVC: BaseVC<HomeReactor> {
     private let goalBottomLabel1 = UILabel()
     private let goalBottomLabel2 = UILabel()
 
+    override func viewWillAppear(_ animated: Bool) {
+        self.navigationController?.isNavigationBarHidden = true
+        self.tabBarController?.tabBar.isHidden = false
+    }
+    override func viewWillDisappear(_ animated: Bool) {
+        self.navigationController?.isNavigationBarHidden = false
+    }
+
     override func addView() {
         [
             titleLabel,
@@ -92,13 +100,17 @@ class HomeVC: BaseVC<HomeReactor> {
         goalBottomLabel1.text = "0%"
         goalBottomLabel2.text = "100%"
         goalProgressView.setProgress(Float(Double(goalPercent) * 0.01), animated: true)
+
+        addButton.rx.tap.bind {
+            self.navigationController?.pushViewController(AddQuestVC(reactor: AddQuestReactor()), animated: true)
+        }.disposed(by: disposeBag)
     }
 
     override func setLayout() {
         titleLabel.snp.makeConstraints {
             $0.left.equalTo(40)
             $0.height.equalTo(35)
-            $0.bottom.equalTo(view.safeAreaLayoutGuide.snp.top).offset(9)
+            $0.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(21)
         }
 
         addButton.snp.makeConstraints {
