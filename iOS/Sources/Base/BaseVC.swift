@@ -29,6 +29,10 @@ class BaseVC<T: Reactor>: UIViewController {
         configureVC()
     }
 
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+          self.view.endEditing(true)
+    }
+
     init(reactor: T) {
         super.init(nibName: nil, bundle: nil)
         self.reactor = reactor
