@@ -8,6 +8,10 @@
 
 import UIKit
 
+protocol AddQuestDelegate: AnyObject {
+    func dismissSelectSchoolVC(_ schoolImage: UIImage)
+}
+
 class AddQuestVC: BaseVC<AddQuestReactor> {
 
     private let titleTextField = UITextField().then {
