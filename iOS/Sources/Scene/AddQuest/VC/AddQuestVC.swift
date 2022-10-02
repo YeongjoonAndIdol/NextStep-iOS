@@ -103,17 +103,20 @@ class AddQuestVC: BaseVC<AddQuestReactor> {
                          NSAttributedString.Key.font: UIFont.systemFont(ofSize: 22, weight: .regular)]
         )
 
-        addButton.rx.tap
-            .bind {
-                if #available(iOS 15.0, *) {
+        if #available(iOS 16.0, *) {
+            addButton.rx.tap
+                .bind {
                     let selectSchoolVC = SelectSchoolVC()
                     if let sheet = selectSchoolVC.sheetPresentationController {
-                        sheet.detents = [.medium()]
+                        sheet.detents = [.custom { _ in
+                            return 310
+                        }]
                         sheet.prefersGrabberVisible = true
+                        sheet.preferredCornerRadius = 32
+                        self.present(selectSchoolVC, animated: true)
                     }
-                    self.present(selectSchoolVC, animated: true)
-                }
-            }.disposed(by: disposeBag)
+                }.disposed(by: disposeBag)
+        }
     }
 
     override func setLayout() {
