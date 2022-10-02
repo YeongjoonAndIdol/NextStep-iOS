@@ -99,6 +99,17 @@ class AddQuestVC: BaseVC<AddQuestReactor> {
                          NSAttributedString.Key.font: UIFont.systemFont(ofSize: 22, weight: .regular)]
         )
 
+        addButton.rx.tap
+            .bind {
+                if #available(iOS 15.0, *) {
+                    let selectSchoolVC = SelectSchoolVC()
+                    if let sheet = selectSchoolVC.sheetPresentationController {
+                        sheet.detents = [.medium()]
+                        sheet.prefersGrabberVisible = true
+                    }
+                    self.present(selectSchoolVC, animated: true)
+                }
+            }.disposed(by: disposeBag)
     }
 
     override func setLayout() {
