@@ -63,9 +63,7 @@ class AddQuestVC: BaseVC<AddQuestReactor> {
         $0.titleLabel?.font = .systemFont(ofSize: 14, weight: .regular)
     }
 
-    private let schoolImageView = UIImageView().then {
-        $0.image = NextStapImage.elementarySchoolImage.image // 추후 제거 예정
-    }
+    let schoolImageView = UIImageView()
 
     override func viewWillAppear(_ animated: Bool) {
         self.tabBarController?.tabBar.isHidden = true
@@ -113,6 +111,7 @@ class AddQuestVC: BaseVC<AddQuestReactor> {
                         }]
                         sheet.prefersGrabberVisible = true
                         sheet.preferredCornerRadius = 32
+                        selectSchoolVC.delegate = self
                         self.present(selectSchoolVC, animated: true)
                     }
                 }.disposed(by: disposeBag)
@@ -177,4 +176,10 @@ extension AddQuestVC: UITextViewDelegate {
         }
     }
 
+}
+extension AddQuestVC: AddQuestDelegate {
+    func dismissSelectSchoolVC(_ schoolImage: UIImage) {
+        print(schoolImage)
+        schoolImageView.image = schoolImage
+    }
 }
