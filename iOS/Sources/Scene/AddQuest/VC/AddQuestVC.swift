@@ -36,13 +36,13 @@ class AddQuestVC: BaseVC<AddQuestReactor> {
 
     private let doneButton = UIButton().then {
         $0.setTitleColor(NextStapColor.surfaceColor.color, for: .normal)
-        $0.setTitle("리스트 생성", for: .normal)
+        $0.setTitle("퀘스트 생성", for: .normal)
         $0.titleLabel?.font = .systemFont(ofSize: 16, weight: .semibold)
         $0.backgroundColor = NextStapColor.buttonDisabledColor.color
         $0.layer.cornerRadius = 10
     }
 
-    fileprivate let textViewPlaceHolder = "부연 설명 (퀘스트를 자세히 설명해주세요.)"
+    fileprivate let textViewPlaceHolder = "부연 설명 (루틴을 자세히 설명해주세요.)"
 
     private let contentTextView = UITextView().then {
         $0.tintColor = NextStapColor.onSurfaceColor.color
@@ -74,7 +74,7 @@ class AddQuestVC: BaseVC<AddQuestReactor> {
     }
 
     override func addView() {
-        self.navigationItem.title = "퀘스트 생성"
+        self.navigationItem.title = "루틴 생성"
 
         [
             titleTextField,
@@ -179,7 +179,6 @@ extension AddQuestVC: UITextViewDelegate {
 }
 extension AddQuestVC: AddQuestDelegate {
     func dismissSelectSchoolVC(_ schoolImage: UIImage) {
-        print(schoolImage)
         schoolImageView.image = schoolImage
     }
 }
