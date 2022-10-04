@@ -12,7 +12,7 @@ protocol AddQuestDelegate: AnyObject {
     func dismissSelectSchoolVC(_ schoolImage: UIImage)
 }
 
-class AddQuestVC: BaseVC<AddQuestReactor> {
+class AddRoutineVC: BaseVC<AddRoutineReactor> {
 
     private let titleTextField = UITextField().then {
         $0.textColor = NextStapColor.onSurfaceColor.color
@@ -161,7 +161,7 @@ class AddQuestVC: BaseVC<AddQuestReactor> {
     }
 }
 
-extension AddQuestVC: UITextViewDelegate {
+extension AddRoutineVC: UITextViewDelegate {
 
     func textViewDidBeginEditing(_ textView: UITextView) {
         if textView.text == textViewPlaceHolder {
@@ -177,7 +177,7 @@ extension AddQuestVC: UITextViewDelegate {
     }
 
 }
-extension AddQuestVC: AddQuestDelegate {
+extension AddRoutineVC: AddQuestDelegate {
     func dismissSelectSchoolVC(_ schoolImage: UIImage) {
         schoolImageView.image = schoolImage
     }

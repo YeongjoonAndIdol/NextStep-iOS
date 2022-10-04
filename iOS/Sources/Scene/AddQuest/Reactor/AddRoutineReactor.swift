@@ -1,5 +1,5 @@
 //
-//  AddQuestReactor.swift
+//  AddRoutineReactor.swift
 //  Next-Stap
 //
 //  Created by 김대희 on 2022/09/28.
@@ -9,7 +9,7 @@
 import Foundation
 import ReactorKit
 
-class AddQuestReactor: Reactor {
+class AddRoutineReactor: Reactor {
 
     private let disposeBag: DisposeBag = .init()
     let initialState: State

@@ -14,7 +14,7 @@ class HomeVC: BaseVC<HomeReactor> {
         $0.textColor = NextStapColor.onSurfaceColor.color
         $0.text = "루틴/퀘스트"
         $0.font = .systemFont(ofSize: 22, weight: .semibold)
-    }
+    } 
 
     private let addButton = UIButton().then {
         $0.setImage(NextStapImage.addButtonIcon.image, for: .normal)
@@ -102,7 +102,7 @@ class HomeVC: BaseVC<HomeReactor> {
         goalProgressView.setProgress(Float(Double(goalPercent) * 0.01), animated: true)
 
         addButton.rx.tap.bind {
-            self.navigationController?.pushViewController(AddQuestVC(reactor: AddQuestReactor()), animated: true)
+            self.navigationController?.pushViewController(AddRoutineVC(reactor: AddRoutineReactor()), animated: true)
         }.disposed(by: disposeBag)
     }
 
