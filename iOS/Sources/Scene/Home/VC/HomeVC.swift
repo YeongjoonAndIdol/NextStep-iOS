@@ -14,7 +14,7 @@ class HomeVC: BaseVC<HomeReactor> {
         $0.textColor = NextStapColor.onSurfaceColor.color
         $0.text = "루틴/퀘스트"
         $0.font = .systemFont(ofSize: 22, weight: .semibold)
-    } 
+    }
 
     private let addButton = UIButton().then {
         $0.setImage(NextStapImage.addButtonIcon.image, for: .normal)
