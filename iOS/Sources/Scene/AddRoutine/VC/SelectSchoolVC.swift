@@ -28,7 +28,7 @@ class SelectSchoolVC: UIViewController {
         $0.distribution = .fillProportionally
     }
 
-    weak var delegate: AddQuestDelegate?
+    weak var delegate: AddRoutineDelegate?
 
     override func viewDidLoad() {
 

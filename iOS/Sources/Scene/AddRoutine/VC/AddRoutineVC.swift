@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol AddQuestDelegate: AnyObject {
+protocol AddRoutineDelegate: AnyObject {
     func dismissSelectSchoolVC(_ schoolImage: UIImage)
 }
 
@@ -177,7 +177,7 @@ extension AddRoutineVC: UITextViewDelegate {
     }
 
 }
-extension AddRoutineVC: AddQuestDelegate {
+extension AddRoutineVC: AddRoutineDelegate {
     func dismissSelectSchoolVC(_ schoolImage: UIImage) {
         schoolImageView.image = schoolImage
     }
