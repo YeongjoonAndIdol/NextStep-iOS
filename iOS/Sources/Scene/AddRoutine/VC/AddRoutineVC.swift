@@ -116,6 +116,11 @@ class AddRoutineVC: BaseVC<AddRoutineReactor> {
                     }
                 }.disposed(by: disposeBag)
         }
+
+        doneButton.rx.tap.bind {
+            self.navigationController?.pushViewController(AddQuestVC(reactor: AddQuestReactor()), animated: true)
+        }.disposed(by: disposeBag)
+
     }
 
     override func setLayout() {
