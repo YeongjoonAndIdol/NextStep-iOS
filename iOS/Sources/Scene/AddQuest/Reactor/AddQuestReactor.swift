@@ -13,7 +13,7 @@ class AddQuestReactor: Reactor {
     private let disposeBag: DisposeBag = .init()
     let initialState: State
 
-    enum Action { 
+    enum Action {
     }
     enum Mutation {
     }
