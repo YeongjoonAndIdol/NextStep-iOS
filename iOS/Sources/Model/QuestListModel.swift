@@ -7,3 +7,9 @@
 //
 
 import Foundation
+
+struct QuestListModel {
+    let title: String
+    let content: String
+    let categoryNumber: Int
+}
