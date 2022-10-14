@@ -8,11 +8,18 @@
 
 import UIKit
 
+protocol AddQuestDelegate: AnyObject {
+    func dismissWriteQuestVC(_ questArray: [QuestListModel])
+}
+
 class AddQuestVC: BaseVC<AddQuestReactor> {
+
+    var questArray: [QuestListModel] = []
     private let questTableView = UITableView().then {
         $0.backgroundColor = .clear
         $0.separatorStyle = .none
         $0.keyboardDismissMode = .onDrag
+        $0.register(AddQuestListCell.self, forCellReuseIdentifier: "addQuestListCell")
     }
 
     private let doneButton = UIButton().then {
@@ -44,11 +51,17 @@ class AddQuestVC: BaseVC<AddQuestReactor> {
         ].forEach {
             view.addSubview($0)
         }
+
+        questTableView.delegate = self
+        questTableView.dataSource = self
+        questTableView.reloadData()
+
     }
 
     override func setLayout() {
         questTableView.snp.makeConstraints {
             $0.top.leading.trailing.equalToSuperview()
+            $0.bottom.equalTo(-125)
         }
 
         doneButton.snp.makeConstraints {
@@ -72,11 +85,38 @@ class AddQuestVC: BaseVC<AddQuestReactor> {
                     }]
                     sheet.prefersGrabberVisible = true
                     sheet.preferredCornerRadius = 32
+                    writeQuestVC.delegate = self
+                    writeQuestVC.questArray = self.questArray
                     self.present(writeQuestVC, animated: true)
                 }
             }.disposed(by: disposeBag)
         }
+        doneButton.rx.tap.bind {
+            print(self.questArray)
+        }.disposed(by: disposeBag)
 
     }
 
+}
+extension AddQuestVC: UITableViewDelegate, UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return questArray.count
+    }
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = (tableView.dequeueReusableCell(
+            withIdentifier: "addQuestListCell") as? AddQuestListCell)!
+        let content = questArray[indexPath.row]
+        cell.categoryImage.image = content.categoryImage
+        cell.questTitleLabel.text = content.title
+        cell.contentTextLabel.text = content.content
+        cell.leftBar.backgroundColor = content.categoryColor
+        return cell
+    }
+}
+
+extension AddQuestVC: AddQuestDelegate {
+    func dismissWriteQuestVC(_ questArray: [QuestListModel]) {
+        self.questArray = questArray
+        questTableView.reloadData()
+    }
 }
