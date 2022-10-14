@@ -10,7 +10,10 @@ import UIKit
 
 class AddQuestListCell: BaseTC {
 
-    let leftBar = UIView()
+    let leftBar = UIView().then {
+        $0.layer.cornerRadius = 2
+    }
+
     let categoryImage = UIImageView()
 
     let categorytextLabel = UILabel().then {
@@ -19,7 +22,7 @@ class AddQuestListCell: BaseTC {
     }
 
     let questTitleLabel = UILabel().then {
-        $0.font = .systemFont(ofSize: 24, weight: .semibold)
+        $0.font = .systemFont(ofSize: 14, weight: .semibold)
         $0.textColor = NextStapColor.onSurfaceColor.color
     }
 
