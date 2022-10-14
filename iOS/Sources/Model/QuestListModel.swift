@@ -6,10 +6,11 @@
 //  Copyright © 2022 com.DMS. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 struct QuestListModel {
     let title: String
     let content: String
-    let categoryNumber: Int
+    let categoryImage: UIImage
+    let categoryColor: UIColor
 }
