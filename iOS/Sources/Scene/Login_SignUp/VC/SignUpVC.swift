@@ -10,6 +10,12 @@ import UIKit
 
 class SignUpVC: BaseVC<SignUpReactor> {
 
+    private let signInLabel = UILabel().then {
+        $0.text = "회원가입"
+        $0.textColor = NextStapColor.mainColor.color
+        $0.font = .systemFont(ofSize: 20, weight: .semibold)
+    }
+
     private let nameTextFieldBackView = UIView()
     private let idTextFieldBackView = UIView()
     private let passwordTextFieldBackView = UIView()
@@ -33,6 +39,7 @@ class SignUpVC: BaseVC<SignUpReactor> {
     override func addView() {
 
         [
+            signInLabel,
             doneButton,
             nameTextFieldBackView,
             idTextFieldBackView,
@@ -87,6 +94,11 @@ class SignUpVC: BaseVC<SignUpReactor> {
     }
 
     override func setLayout() {
+        signInLabel.snp.makeConstraints {
+            $0.top.equalTo(view.safeAreaLayoutGuide).offset(8)
+            $0.leading.equalTo(30)
+            $0.height.equalTo(32)
+        }
 
         nameTextFieldBackView.snp.makeConstraints {
             $0.leading.trailing.equalTo(view).inset(16)
