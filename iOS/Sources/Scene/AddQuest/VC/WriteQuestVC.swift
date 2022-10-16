@@ -17,13 +17,13 @@ class WriteQuestVC: UIViewController {
     typealias NextStapColor = NextStapAsset.Color
     typealias NextStapImage = NextStapAsset.Assets
     private var disposeBag: DisposeBag = .init()
+    private var categoryNumber = 0
 
     private let titleTextIsDone = BehaviorSubject<Bool>(value: false)
     private let contentTextIsDone = BehaviorSubject<Bool>(value: false)
     private let categoryIsDone = BehaviorSubject<Bool>(value: false)
 
-    var questArray: [QuestListModel] = []
-    var categoryColor = 0
+    var questArray: [CategoryModel] = []
     weak var delegate: AddQuestDelegate?
 
     private let titleTextField = UITextField().then {
@@ -104,37 +104,37 @@ class WriteQuestVC: UIViewController {
             self.categoryIsDone.onNext(true)
             self.categoryButton.setTitle("운동", for: .normal)
             self.categoryImageView.image = NextStapImage.category1.image
-            self.categoryColor = 1
+            self.categoryNumber = 1
         })
         let menu2 = UIAction(title: "공부", handler: {_ in
             self.categoryIsDone.onNext(true)
             self.categoryButton.setTitle("공부", for: .normal)
             self.categoryImageView.image = NextStapImage.category2.image
-            self.categoryColor = 2
+            self.categoryNumber = 2
         })
         let menu3 = UIAction(title: "생활패턴", handler: {_ in
             self.categoryIsDone.onNext(true)
             self.categoryButton.setTitle("생활패턴", for: .normal)
             self.categoryImageView.image = NextStapImage.category3.image
-            self.categoryColor = 3
+            self.categoryNumber = 3
         })
         let menu4 = UIAction(title: "취미", handler: {_ in
             self.categoryIsDone.onNext(true)
             self.categoryButton.setTitle("취미", for: .normal)
             self.categoryImageView.image = NextStapImage.category4.image
-            self.categoryColor = 4
+            self.categoryNumber = 4
         })
         let menu5 = UIAction(title: "독서", handler: {_ in
             self.categoryIsDone.onNext(true)
             self.categoryButton.setTitle("독서", for: .normal)
             self.categoryImageView.image = NextStapImage.category5.image
-            self.categoryColor = 5
+            self.categoryNumber = 5
         })
         let menu6 = UIAction(title: "환경", handler: {_ in
             self.categoryIsDone.onNext(true)
             self.categoryButton.setTitle("환경", for: .normal)
             self.categoryImageView.image = NextStapImage.category6.image
-            self.categoryColor = 6
+            self.categoryNumber = 6
         })
 
         categoryButton.showsMenuAsPrimaryAction = true
@@ -219,13 +219,7 @@ class WriteQuestVC: UIViewController {
             }.disposed(by: disposeBag)
 
         doneButton.rx.tap.bind {
-            self.questArray.append(QuestListModel(
-                title: self.titleTextField.text!,
-                content: self.contentTextView.text,
-                categoryImage: self.categoryImageView.image!,
-                categoryColor: self.selectColor(self.categoryColor)
-            ))
-            print(self.questArray)
+            self.appendQuestList(categoryNum: self.categoryNumber)
             self.delegate?.dismissWriteQuestVC(self.questArray)
             self.dismiss(animated: true)
         }.disposed(by: disposeBag)
@@ -234,22 +228,28 @@ class WriteQuestVC: UIViewController {
 
 extension WriteQuestVC: UITextViewDelegate {
 
-    func selectColor(_ number: Int) -> UIColor {
-        switch number {
+    func appendQuestList(categoryNum: Int) {
+        switch categoryNum {
         case 1:
-            return NextStapColor.mainColor.color
+            questArray.append(Category.SPORT.toQuestModel(titleTextField.text!,
+                                                          contentTextView.text))
         case 2:
-            return NextStapColor.subColor2.color
+            questArray.append(Category.STUDY.toQuestModel(titleTextField.text!,
+                                                          contentTextView.text))
         case 3:
-            return NextStapColor.subColor1.color
+            questArray.append(Category.LIFE.toQuestModel(titleTextField.text!,
+                                                         contentTextView.text))
         case 4:
-            return NextStapColor.subColor3.color
+            questArray.append(Category.HOBBY.toQuestModel(titleTextField.text!,
+                                                          contentTextView.text))
         case 5:
-            return NextStapColor.subColor4.color
+            questArray.append(Category.BOOK.toQuestModel(titleTextField.text!,
+                                                         contentTextView.text))
         case 6:
-            return NextStapColor.subColor5.color
+            questArray.append(Category.ENVIRONMENT.toQuestModel(titleTextField.text!,
+                                                                contentTextView.text))
         default:
-            return .black
+            break
         }
     }
 

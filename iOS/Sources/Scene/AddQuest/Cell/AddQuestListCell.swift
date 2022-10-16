@@ -65,12 +65,12 @@ class AddQuestListCell: BaseTC {
             $0.width.equalTo(4)
         }
         categoryImage.snp.makeConstraints {
-            $0.leading.equalTo(46)
-            $0.width.height.equalTo(24)
-            $0.top.equalTo(1)
+            $0.leading.equalTo(44)
+            $0.width.height.equalTo(19)
+            $0.top.equalTo(4)
         }
         categorytextLabel.snp.makeConstraints {
-            $0.leading.equalTo(82)
+            $0.leading.equalTo(70)
             $0.top.equalTo(4)
             $0.height.equalTo(19)
             $0.trailing.equalTo(-16)

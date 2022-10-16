@@ -9,12 +9,12 @@
 import UIKit
 
 protocol AddQuestDelegate: AnyObject {
-    func dismissWriteQuestVC(_ questArray: [QuestListModel])
+    func dismissWriteQuestVC(_ questArray: [CategoryModel])
 }
 
 class AddQuestVC: BaseVC<AddQuestReactor> {
 
-    var questArray: [QuestListModel] = []
+    var questArray: [CategoryModel] = []
     private let questTableView = UITableView().then {
         $0.backgroundColor = .clear
         $0.separatorStyle = .none
@@ -107,6 +107,7 @@ extension AddQuestVC: UITableViewDelegate, UITableViewDataSource {
             withIdentifier: "addQuestListCell") as? AddQuestListCell)!
         let content = questArray[indexPath.row]
         cell.categoryImage.image = content.categoryImage
+        cell.categorytextLabel.text = content.categoryString
         cell.questTitleLabel.text = content.title
         cell.contentTextLabel.text = content.content
         cell.leftBar.backgroundColor = content.categoryColor
@@ -115,7 +116,7 @@ extension AddQuestVC: UITableViewDelegate, UITableViewDataSource {
 }
 
 extension AddQuestVC: AddQuestDelegate {
-    func dismissWriteQuestVC(_ questArray: [QuestListModel]) {
+    func dismissWriteQuestVC(_ questArray: [CategoryModel]) {
         self.questArray = questArray
         questTableView.reloadData()
     }
