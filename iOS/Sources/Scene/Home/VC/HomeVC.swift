@@ -74,6 +74,23 @@ class HomeVC: BaseVC<HomeReactor> {
         addChild(questTabView)
         view.addSubview(questTabView.view)
 
+        addButton.rx.tap.bind {
+            self.navigationController?.pushViewController(AddRoutineVC(reactor: AddRoutineReactor()), animated: true)
+        }.disposed(by: disposeBag)
+        if #available(iOS 15.0, *) {
+            achievementButton.rx.tap
+                .bind {
+                    let selectSchoolVC = DetailQuestVC()
+                    if let sheet = selectSchoolVC.sheetPresentationController {
+                        sheet.detents = [.medium(), .large()]
+                        sheet.prefersGrabberVisible = true
+                        sheet.preferredCornerRadius = 32
+                        self.present(selectSchoolVC, animated: true)
+                    }
+                }.disposed(by: disposeBag)
+        }
+    }
+    override func configureVC() {
         let goalPercent = 50 // 추후 변경 예정
 
         goalTitleLabel.text = "오늘 퀘스트\n\(goalPercent)% 성공하셨습니다!"
@@ -101,11 +118,7 @@ class HomeVC: BaseVC<HomeReactor> {
         goalBottomLabel2.text = "100%"
         goalProgressView.setProgress(Float(Double(goalPercent) * 0.01), animated: true)
 
-        addButton.rx.tap.bind {
-            self.navigationController?.pushViewController(AddRoutineVC(reactor: AddRoutineReactor()), animated: true)
-        }.disposed(by: disposeBag)
     }
-
     override func setLayout() {
         titleLabel.snp.makeConstraints {
             $0.left.equalTo(40)
