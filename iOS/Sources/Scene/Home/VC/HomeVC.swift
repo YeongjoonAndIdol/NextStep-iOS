@@ -75,7 +75,7 @@ class HomeVC: BaseVC<HomeReactor> {
         view.addSubview(questTabView.view)
 
         addButton.rx.tap.bind {
-            self.navigationController?.pushViewController(AddRoutineVC(reactor: AddRoutineReactor()), animated: true)
+            self.navigationController?.pushViewController(WriteRetrospectVC(), animated: true)
         }.disposed(by: disposeBag)
         if #available(iOS 15.0, *) {
             achievementButton.rx.tap
