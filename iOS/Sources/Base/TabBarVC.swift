@@ -36,7 +36,7 @@ class TabBarVC: UITabBarController {
 
         tabThr.tabBarItem = tabThrBarItem3
 
-        let tabFou = UIViewController()
+        let tabFou = MyPageVC(reactor: MyPageReactor())
         let tabFouBarItem4 = UITabBarItem(
             title: "마이페이지",
             image: UIImage(systemName: "person.crop.circle.fill"),

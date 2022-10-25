@@ -1,21 +1,13 @@
-//
-//  SuggestVC.swift
-//  Next-Stap
-//
-//  Created by 김대희 on 2022/09/23.
-//  Copyright © 2022 com.DMS. All rights reserved.
-//
-
 import UIKit
 import WebKit
 
-class SuggestVC: BaseVC<SuggestReactor> {
+class MyPageVC: BaseVC<MyPageReactor> {
     var webView: WKWebView!
 
     override func addView() {
         setupWebView()
 
-        let url = URL(string: "https://nextstep-front.vercel.app/myquest")
+        let url = URL(string: "https://nextstep-front-94xsj5if3-nextstepdms.vercel.app/mypage")
         let request = URLRequest(url: url!)
         webView.load(request)
     }
@@ -24,7 +16,7 @@ class SuggestVC: BaseVC<SuggestReactor> {
         let webConfiguration = WKWebViewConfiguration()
 
         webView = WKWebView(frame: .zero, configuration: webConfiguration)
-//        webView.uiDelegate = self
+        webView.uiDelegate = self
         view.addSubview(webView)
         webView.translatesAutoresizingMaskIntoConstraints = false
 
@@ -44,3 +36,4 @@ class SuggestVC: BaseVC<SuggestReactor> {
     }
 
 }
+extension MyPageVC: WKUIDelegate, WKNavigationDelegate {}
