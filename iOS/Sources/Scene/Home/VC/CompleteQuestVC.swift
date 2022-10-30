@@ -1,8 +1,15 @@
 import UIKit
 import SnapKit
 import Then
+import RxSwift
+import Moya
+import RxMoya
 
 class CompleteQuestVC: UIViewController {
+    fileprivate var questList: [SingleQuestDTO] = []
+    private let provider = MoyaProvider<NextStapAPI>()
+    private let disposeBag: DisposeBag = .init()
+
     private let titleLabel = UILabel().then {
         $0.textColor = NextStapAsset.Color.onSurfaceColor.color
         $0.font = .systemFont(ofSize: 16, weight: .semibold)
@@ -23,8 +30,8 @@ class CompleteQuestVC: UIViewController {
         ].forEach {
             view.addSubview($0)
         }
-        titleLabel.text = "완료 퀘스트 | 9 개"
-
+        titleLabel.text = "완료 퀘스트 | - 개"
+        getSchoolList()
         tableView.delegate = self
         tableView.dataSource = self
 
@@ -40,16 +47,34 @@ class CompleteQuestVC: UIViewController {
         }
     }
     private func getSchoolList() {
-
+        provider.rx.request(.fetchQuestList(type: "COMPLETE"))
+            .subscribe { event in
+                switch event {
+                case let .success(response):
+                    if let data = try? JSONDecoder().decode(FetchQuestListResponseDTO.self, from: response.data) {
+                        self.questList = data.quest
+                        self.titleLabel.text = "완료 퀘스트 | \(data.quest.count) 개"
+                        self.tableView.reloadData()
+                    }
+                case let .failure(error):
+                    print(error)
+                }
+            }.disposed(by: disposeBag)
     }
 }
 
 extension CompleteQuestVC: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 6
+        return questList.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        return QuestListCell()
+        let cell = (tableView.dequeueReusableCell(
+            withIdentifier: "addQuestListCell") as? QuestListCell)!
+        let content = questList[indexPath.row]
+
+        cell.titleLabel.text = content.name
+        cell.checkButton.isChecked = content.isCompleted
+        return cell
     }
 }
