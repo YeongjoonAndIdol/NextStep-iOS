@@ -28,7 +28,7 @@ class TabBarVC: UITabBarController {
 
         tabTwo.tabBarItem = tabTwoBarItem2
 
-        let tabThr = SuggestVC(reactor: SuggestReactor())
+        let tabThr = BaseNC(rootViewController: SuggestVC(reactor: SuggestReactor()))
         let tabThrBarItem3 = UITabBarItem(
             title: "추천",
             image: NextStapAsset.Assets.suggestIcon.image,
@@ -36,7 +36,7 @@ class TabBarVC: UITabBarController {
 
         tabThr.tabBarItem = tabThrBarItem3
 
-        let tabFou = MyPageVC(reactor: MyPageReactor())
+        let tabFou = BaseNC(rootViewController: MyPageVC(reactor: MyPageReactor()))
         let tabFouBarItem4 = UITabBarItem(
             title: "마이페이지",
             image: UIImage(systemName: "person.crop.circle.fill"),
