@@ -1,11 +1,3 @@
-//
-//  HomeVC.swift
-//  Next-Stap
-//
-//  Created by 김대희 on 2022/09/21.
-//  Copyright © 2022 com.DMS. All rights reserved.
-//
-
 import UIKit
 
 class HomeVC: BaseVC<HomeReactor> {
@@ -71,53 +63,19 @@ class HomeVC: BaseVC<HomeReactor> {
         ].forEach {
             view.addSubview($0)
         }
+
         addChild(questTabView)
         view.addSubview(questTabView.view)
-
-        addButton.rx.tap.bind {
-            self.navigationController?.pushViewController(AddRoutineVC(reactor: AddRoutineReactor()), animated: true)
-        }.disposed(by: disposeBag)
-        if #available(iOS 15.0, *) {
-            achievementButton.rx.tap
-                .bind {
-                    let selectSchoolVC = DetailQuestVC()
-                    if let sheet = selectSchoolVC.sheetPresentationController {
-                        sheet.detents = [.medium(), .large()]
-                        sheet.prefersGrabberVisible = true
-                        sheet.preferredCornerRadius = 32
-                        self.present(selectSchoolVC, animated: true)
-                    }
-                }.disposed(by: disposeBag)
-        }
     }
     override func configureVC() {
-        let goalPercent = 50 // 추후 변경 예정
-
-        goalTitleLabel.text = "오늘 퀘스트\n\(goalPercent)% 성공하셨습니다!"
-
-        let fullText = goalTitleLabel.text ?? ""
-        let attribtuedString = NSMutableAttributedString(string: fullText)
-
-        let range = (fullText as NSString).range(of: "\(goalPercent)%")
-        let fullRange = (fullText as NSString).range(of: goalTitleLabel.text!)
-
-        attribtuedString.addAttributes([NSAttributedString.Key.kern: -0.41,
-                                        NSAttributedString.Key.paragraphStyle: paragraphStyle],
-                                       range: fullRange)
-        attribtuedString.addAttribute(.foregroundColor,
-                                        value: NextStapColor.mainColor.color,
-                                        range: range)
-
-        goalTitleLabel.attributedText = attribtuedString
+        goalBottomLabel1.text = "0%"
+        goalBottomLabel2.text = "100%"
+        goalTitleLabel.text = "오늘 퀘스트\n0% 성공하셨습니다!"
 
         [goalBottomLabel1, goalBottomLabel2].forEach {
             $0.textColor = NextStapColor.mainColor.color
             $0.font = .systemFont(ofSize: 10, weight: .semibold)
         }
-        goalBottomLabel1.text = "0%"
-        goalBottomLabel2.text = "100%"
-        goalProgressView.setProgress(Float(Double(goalPercent) * 0.01), animated: true)
-
     }
     override func setLayout() {
         titleLabel.snp.makeConstraints {
@@ -165,5 +123,59 @@ class HomeVC: BaseVC<HomeReactor> {
             $0.top.equalTo(goalProgressView.snp.bottom).offset(4)
             $0.height.equalTo(18)
         }
+    }
+
+    override func bindView(reactor: HomeReactor) {
+        addButton.rx.tap.bind {
+            self.navigationController?.pushViewController(AddRoutineVC(reactor: AddRoutineReactor()), animated: true)
+        }.disposed(by: disposeBag)
+
+        if #available(iOS 15.0, *) {
+            achievementButton.rx.tap
+                .bind {
+                    let selectSchoolVC = DetailQuestVC()
+                    if let sheet = selectSchoolVC.sheetPresentationController {
+                        sheet.detents = [.medium(), .large()]
+                        sheet.prefersGrabberVisible = true
+                        sheet.preferredCornerRadius = 32
+                        self.present(selectSchoolVC, animated: true)
+                    }
+                }.disposed(by: disposeBag)
+        }
+    }
+
+    override func bindAction(reactor: HomeReactor) {
+        self.rx.viewDidLoad
+            .map { Reactor.Action.viewDidLoad }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+    }
+
+    override func bindState(reactor: HomeReactor) {
+        reactor.state
+            .map { $0.progress }
+            .bind { progress in
+                self.setProgressView(progress: progress)
+            }.disposed(by: disposeBag)
+    }
+
+    private func setProgressView(progress: Int) {
+        goalTitleLabel.text = "오늘 퀘스트\n\(progress)% 성공하셨습니다!"
+
+        let fullText = goalTitleLabel.text ?? ""
+        let attribtuedString = NSMutableAttributedString(string: fullText)
+
+        let range = (fullText as NSString).range(of: "\(progress)%")
+        let fullRange = (fullText as NSString).range(of: goalTitleLabel.text!)
+
+        attribtuedString.addAttributes([NSAttributedString.Key.kern: -0.41,
+                                        NSAttributedString.Key.paragraphStyle: paragraphStyle],
+                                       range: fullRange)
+        attribtuedString.addAttribute(.foregroundColor,
+                                        value: NextStapColor.mainColor.color,
+                                        range: range)
+
+        goalTitleLabel.attributedText = attribtuedString
+        goalProgressView.setProgress(Float(Double(progress) * 0.01), animated: true)
     }
 }
