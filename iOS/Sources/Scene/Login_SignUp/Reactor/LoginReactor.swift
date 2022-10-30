@@ -22,6 +22,7 @@ class LoginReactor: Reactor {
     struct State {
         var id: String = ""
         var passWord: String = ""
+        var isNavigate: Bool = false
     }
 
     init() {
@@ -62,6 +63,7 @@ extension LoginReactor {
                     if let data = try? JSONDecoder().decode(TokenResponseDTO.self, from: response.data) {
                         KeyChain.create(key: KeyChainDTO.accessToken, token: data.accessToken)
                         KeyChain.create(key: KeyChainDTO.refreshToken, token: data.refreshToken)
+                        newState.isNavigate = true
                     }
                 case .failure(let error):
                     print(error)

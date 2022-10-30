@@ -1,19 +1,6 @@
-//
-//  LoginVC.swift
-//  Next-Stap
-//
-//  Created by 김대희 on 2022/09/06.
-//  Copyright © 2022 com.DMS. All rights reserved.
-//
-
 import UIKit
 
 class LoginVC: BaseVC<LoginReactor> {
-
-//    private let logoImage = UIImageView().then {
-//        $0.image = NextStapImage.loginLogo.image
-//    }
-
     private let logoImage = UIImageView()
 
     private let logoLabel = UILabel().then {
@@ -105,11 +92,6 @@ class LoginVC: BaseVC<LoginReactor> {
         )
 
         passwordTextFiled.isSecureTextEntry = true
-
-        signUpButton.rx.tap.bind { _ in
-            self.navigationController?.pushViewController(SignUpVC(reactor: SignUpReactor()), animated: true)
-        }.disposed(by: disposeBag)
-
     }
 
     override func setLayout() {
@@ -121,7 +103,6 @@ class LoginVC: BaseVC<LoginReactor> {
         }
 
         logoLabel.snp.makeConstraints {
-//            $0.top.equalTo(logoImage.snp.bottom)
             $0.left.equalTo(33)
             $0.height.equalTo(35)
             $0.bottom.equalTo(idTextFiledBackView.snp.top).offset(-20)
@@ -176,6 +157,41 @@ class LoginVC: BaseVC<LoginReactor> {
             $0.centerX.equalTo(view)
         }
 
+    }
+
+    override func bindView(reactor: LoginReactor) {
+        signUpButton.rx.tap.bind { _ in
+            self.navigationController?.pushViewController(SignUpVC(reactor: SignUpReactor()), animated: true)
+        }.disposed(by: disposeBag)
+    }
+
+    override func bindAction(reactor: LoginReactor) {
+        loginButton.rx.tap
+            .map { Reactor.Action.loginButtonPress }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+    }
+
+    override func bindState(reactor: LoginReactor) {
+        reactor.state
+            .map { $0.id }
+            .distinctUntilChanged()
+            .bind(to: idTextFiled.rx.text)
+            .disposed(by: disposeBag)
+
+        reactor.state
+            .map { $0.passWord }
+            .distinctUntilChanged()
+            .bind(to: passwordTextFiled.rx.text)
+            .disposed(by: disposeBag)
+
+        reactor.state
+            .map { $0.isNavigate }
+            .bind { bool in
+                if bool {
+                    self.present(TabBarVC(), animated: true)
+                }
+            }.disposed(by: disposeBag)
     }
 
 }
