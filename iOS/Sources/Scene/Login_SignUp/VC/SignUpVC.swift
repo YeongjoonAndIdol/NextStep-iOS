@@ -1,11 +1,3 @@
-//
-//  SignUpVC.swift
-//  Next-Stap
-//
-//  Created by 김대희 on 2022/09/13.
-//  Copyright © 2022 com.DMS. All rights reserved.
-//
-
 import UIKit
 
 class SignUpVC: BaseVC<SignUpReactor> {
@@ -141,8 +133,39 @@ class SignUpVC: BaseVC<SignUpReactor> {
             $0.leading.trailing.equalTo(view).inset(16)
             $0.height.equalTo(54)
         }
-        doneButton.makeDoneButtonShadows()
 
     }
 
+    override func bindAction(reactor: SignUpReactor) {
+        doneButton.rx.tap
+            .map { Reactor.Action.signUpButtonPress }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+    }
+
+    override func bindState(reactor: SignUpReactor) {
+        reactor.state
+            .map { $0.id }
+            .distinctUntilChanged()
+            .bind(to: idTextField.rx.text)
+            .disposed(by: disposeBag)
+
+        reactor.state
+            .map { $0.passWord }
+            .bind(to: passwordTextField.rx.text)
+            .disposed(by: disposeBag)
+
+        reactor.state
+            .map { $0.name }
+            .bind(to: nameTextField.rx.text)
+            .disposed(by: disposeBag)
+
+        reactor.state
+            .map { $0.isNavigate }
+            .bind { bool in
+                if bool {
+                    self.navigationController?.popViewController(animated: true)
+                }
+            }.disposed(by: disposeBag)
+    }
 }
