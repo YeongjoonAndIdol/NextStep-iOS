@@ -1,25 +1,8 @@
-//
-//  AllQuestVC.swift
-//  Next-Stap
-//
-//  Created by 김대희 on 2022/09/23.
-//  Copyright © 2022 com.DMS. All rights reserved.
-//
-
 import UIKit
 import SnapKit
 import Then
 
-class AllQuestVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
-
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 6
-    }
-
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        return QuestListCell()
-    }
-
+class AllQuestVC: UIViewController {
     private let titleLabel = UILabel().then {
         $0.textColor = NextStapAsset.Color.onSurfaceColor.color
         $0.font = .systemFont(ofSize: 16, weight: .semibold)
@@ -55,5 +38,18 @@ class AllQuestVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
             $0.leading.trailing.bottom.equalToSuperview()
             $0.top.equalTo(view.safeAreaLayoutGuide).offset(76)
         }
+    }
+    private func getSchoolList() {
+
+    }
+}
+
+extension AllQuestVC: UITableViewDelegate, UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 6
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        return QuestListCell()
     }
 }

@@ -1,22 +1,6 @@
-//
-//  InCompleteQuestVC.swift
-//  Next-Stap
-//
-//  Created by 김대희 on 2022/09/23.
-//  Copyright © 2022 com.DMS. All rights reserved.
-//
-
 import UIKit
 
-class InCompleteQuestVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
-
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 4
-    }
-
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        return QuestListCell()
-    }
+class InCompleteQuestVC: UIViewController {
 
     private let titleLabel = UILabel().then {
         $0.textColor = NextStapAsset.Color.onSurfaceColor.color
@@ -53,5 +37,15 @@ class InCompleteQuestVC: UIViewController, UITableViewDelegate, UITableViewDataS
             $0.leading.trailing.bottom.equalToSuperview()
             $0.top.equalTo(view.safeAreaLayoutGuide).offset(76)
         }
+    }
+}
+
+extension InCompleteQuestVC: UITableViewDelegate, UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 6
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        return QuestListCell()
     }
 }
