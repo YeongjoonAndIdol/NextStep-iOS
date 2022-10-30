@@ -19,7 +19,7 @@ class AllQuestVC: UIViewController {
         $0.backgroundColor = .clear
         $0.separatorStyle = .none
         $0.keyboardDismissMode = .onDrag
-        $0.register(QuestListCell.self, forCellReuseIdentifier: "PostCell")
+        $0.register(QuestListCell.self, forCellReuseIdentifier: "QuestListCell")
     }
 
     override func viewDidLoad() {
@@ -72,11 +72,22 @@ extension AllQuestVC: UITableViewDelegate, UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = (tableView.dequeueReusableCell(
-            withIdentifier: "addQuestListCell") as? QuestListCell)!
+            withIdentifier: "QuestListCell") as? QuestListCell)!
         let content = questList[indexPath.row]
 
         cell.titleLabel.text = content.name
         cell.checkButton.isChecked = content.isCompleted
+        cell.checkButton.rx.tap.bind {
+            self.provider.rx.request(.questRecommendAndCancel(questID: content.id))
+                .subscribe { event in
+                    switch event {
+                    case .success:
+                        break
+                    case let .failure(error):
+                        print(error)
+                    }
+                }.disposed(by: self.disposeBag)
+        }.disposed(by: disposeBag)
         return cell
     }
 }

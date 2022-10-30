@@ -30,7 +30,7 @@ extension NextStapAPI: Moya.TargetType {
 extension NextStapAPI {
 
     func getBaseURL() -> URL {
-        return URL(string: "")!
+        return URL(string: "https://github.com")!
     }
 
     func getPath() -> String {
