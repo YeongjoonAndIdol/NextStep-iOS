@@ -141,6 +141,21 @@ class SignUpVC: BaseVC<SignUpReactor> {
             .map { Reactor.Action.signUpButtonPress }
             .bind(to: reactor.action)
             .disposed(by: disposeBag)
+
+        idTextField.rx.text
+            .map { Reactor.Action.updateID($0 ?? "") }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+
+        passwordTextField.rx.text
+            .map { Reactor.Action.updatePassWord($0 ?? "") }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+
+        nameTextField.rx.text
+            .map { Reactor.Action.updateName($0 ?? "") }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
     }
 
     override func bindState(reactor: SignUpReactor) {
