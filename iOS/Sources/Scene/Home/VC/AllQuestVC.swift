@@ -53,13 +53,11 @@ class AllQuestVC: UIViewController {
             .subscribe { event in
                 switch event {
                 case let .success(response):
-                    if response.statusCode == 200 {
-                        if let data = try? JSONDecoder().decode(FetchQuestListResponseDTO.self, from: response.data) {
-                            self.questList = data.quest
-                            self.titleLabel.text = "전체 퀘스트 | \(data.quest.count) 개"
-                            self.tableView.reloadData()
-                        }
-                    } else { print(response.statusCode) }
+                    if let data = try? JSONDecoder().decode(FetchQuestListResponseDTO.self, from: response.data) {
+                        self.questList = data.quest
+                        self.titleLabel.text = "전체 퀘스트 | \(data.quest.count) 개"
+                        self.tableView.reloadData()
+                    }
                 case let .failure(error):
                     print(error)
                 }
@@ -83,12 +81,8 @@ extension AllQuestVC: UITableViewDelegate, UITableViewDataSource {
             self.provider.rx.request(.questRecommendAndCancel(questID: content.id))
                 .subscribe { event in
                     switch event {
-                    case let .success(response):
-                        if response.statusCode == 200 {
-                            break
-                        } else {
-                            print(response.statusCode)
-                        }
+                    case .success:
+                        break
                     case let .failure(error):
                         print(error)
                     }

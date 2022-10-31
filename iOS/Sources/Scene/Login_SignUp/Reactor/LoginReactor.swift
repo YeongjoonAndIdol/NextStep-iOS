@@ -60,13 +60,11 @@ extension LoginReactor {
             .subscribe { event in
                 switch event {
                 case .success(let response):
-                    if response.statusCode == 200 {
-                        if let data = try? JSONDecoder().decode(TokenResponseDTO.self, from: response.data) {
-                            KeyChain.create(key: KeyChainDTO.accessToken, token: data.accessToken)
-                            KeyChain.create(key: KeyChainDTO.refreshToken, token: data.refreshToken)
-                            newState.isNavigate = true
-                        }
-                    } else { print(response.statusCode) }
+                    if let data = try? JSONDecoder().decode(TokenResponseDTO.self, from: response.data) {
+                        KeyChain.create(key: KeyChainDTO.accessToken, token: data.accessToken)
+                        KeyChain.create(key: KeyChainDTO.refreshToken, token: data.refreshToken)
+                        newState.isNavigate = true
+                    }
                 case .failure(let error):
                     print(error)
                 }
