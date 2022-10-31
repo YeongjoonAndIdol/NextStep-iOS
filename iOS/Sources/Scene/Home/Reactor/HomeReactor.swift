@@ -40,7 +40,7 @@ extension HomeReactor {
         var newState = state
         switch mutation {
         case .fetchQuestList:
-            provider.rx.request(.fetchQuestList(type: "ALL"))
+            NextStapAPI.fetchQuestList(type: "ALL").request()
             .subscribe { event in
                 switch event {
                 case let .success(response):
