@@ -1,7 +1,9 @@
 import UIKit
+import RxSwift
 
 class LoginVC: BaseVC<LoginReactor> {
-    private let logoImage = UIImageView()
+    private let idTextIsDone = BehaviorSubject<Bool>(value: false)
+    private let passwordTextIsDone = BehaviorSubject<Bool>(value: false)
 
     private let logoLabel = UILabel().then {
         $0.text = "Next Stap"
@@ -48,7 +50,6 @@ class LoginVC: BaseVC<LoginReactor> {
      override func addView() {
 
         [
-            logoImage,
             logoLabel,
             idTextFiledBackView,
             passwordTextFiledBackView,
@@ -95,13 +96,6 @@ class LoginVC: BaseVC<LoginReactor> {
     }
 
     override func setLayout() {
-
-        logoImage.snp.makeConstraints {
-            $0.top.equalTo(view.safeAreaLayoutGuide).offset(16)
-            $0.left.equalTo(32)
-            $0.width.height.equalTo(64)
-        }
-
         logoLabel.snp.makeConstraints {
             $0.left.equalTo(33)
             $0.height.equalTo(35)
@@ -163,6 +157,35 @@ class LoginVC: BaseVC<LoginReactor> {
         signUpButton.rx.tap.bind { _ in
             self.navigationController?.pushViewController(SignUpVC(reactor: SignUpReactor()), animated: true)
         }.disposed(by: disposeBag)
+
+        idTextFiled.rx.text.bind {
+            if $0 == "" {
+                self.idTextIsDone.onNext(false)
+            } else {
+                self.idTextIsDone.onNext(true)
+            }
+        }.disposed(by: disposeBag)
+
+        passwordTextFiled.rx.text.bind {
+            if $0 == "" {
+                self.passwordTextIsDone.onNext(false)
+            } else {
+                self.passwordTextIsDone.onNext(true)
+            }
+        }.disposed(by: disposeBag)
+
+        Observable.combineLatest(idTextIsDone,
+                                 passwordTextIsDone) {$0 && $1 }
+            .bind {
+                if $0 == true {
+                    self.loginButton.backgroundColor = NextStapColor.mainColor.color
+                    self.loginButton.isEnabled = true
+                } else {
+                    self.loginButton.backgroundColor = NextStapColor.buttonDisabledColor.color
+                    self.loginButton.isEnabled = false
+                }
+            }.disposed(by: disposeBag)
+
     }
 
     override func bindAction(reactor: LoginReactor) {

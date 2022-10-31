@@ -24,7 +24,7 @@ class SignUpVC: BaseVC<SignUpReactor> {
         $0.setTitleColor(NextStapColor.surfaceColor.color, for: .normal)
         $0.setTitle("완료", for: .normal)
         $0.titleLabel?.font = .systemFont(ofSize: 16, weight: .semibold)
-        $0.backgroundColor = NextStapColor.buttonDisabledColor.color
+        $0.backgroundColor = NextStapColor.mainColor.color
         $0.layer.cornerRadius = 10
     }
 
