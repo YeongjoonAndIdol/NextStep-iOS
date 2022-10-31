@@ -13,7 +13,6 @@ class AddQuestReactor: Reactor {
         case updateContent(String)
         case updateSchoolType(String)
         case nextButtonPress
-
     }
     enum Mutation {
         case setName(String)
