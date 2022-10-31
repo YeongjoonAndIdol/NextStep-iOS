@@ -44,9 +44,11 @@ extension HomeReactor {
             .subscribe { event in
                 switch event {
                 case let .success(response):
-                    if let data = try? JSONDecoder().decode(FetchQuestListResponseDTO.self, from: response.data) {
-                        newState.progress = data.progress
-                    }
+                    if response.statusCode == 200 {
+                        if let data = try? JSONDecoder().decode(FetchQuestListResponseDTO.self, from: response.data) {
+                            newState.progress = data.progress
+                        }
+                    } else { print(response.statusCode) }
                 case let .failure(error):
                     print(error)
                 }

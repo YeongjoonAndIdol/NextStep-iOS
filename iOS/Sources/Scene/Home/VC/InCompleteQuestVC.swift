@@ -51,12 +51,13 @@ class InCompleteQuestVC: UIViewController {
         provider.rx.request(.fetchQuestList(type: "COMPLETE"))
             .subscribe { event in
                 switch event {
-                case let .success(response):
-                    if let data = try? JSONDecoder().decode(FetchQuestListResponseDTO.self, from: response.data) {
-                        self.questList = data.quest
-                        self.titleLabel.text = "미완료 퀘스트 | \(data.quest.count) 개"
-                        self.tableView.reloadData()
-                    }
+                    if response.statusCode == 200 {
+                        if let data = try? JSONDecoder().decode(FetchQuestListResponseDTO.self, from: response.data) {
+                            self.questList = data.quest
+                            self.titleLabel.text = "전체 퀘스트 | \(data.quest.count) 개"
+                            self.tableView.reloadData()
+                        }
+                    } else { print(response.statusCode) }
                 case let .failure(error):
                     print(error)
                 }
@@ -81,8 +82,12 @@ extension InCompleteQuestVC: UITableViewDelegate, UITableViewDataSource {
             self.provider.rx.request(.questRecommendAndCancel(questID: content.id))
                 .subscribe { event in
                     switch event {
-                    case .success:
-                        break
+                    case let .success(response):
+                        if response.statusCode == 200 {
+                            break
+                        } else {
+                            print(response.statusCode)
+                        }
                     case let .failure(error):
                         print(error)
                     }

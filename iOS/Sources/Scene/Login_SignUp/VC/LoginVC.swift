@@ -211,12 +211,10 @@ class LoginVC: BaseVC<LoginReactor> {
         reactor.state
             .map { $0.isNavigate }
             .bind { bool in
-                let tabBarVC = TabBarVC()
-                tabBarVC.modalPresentationStyle = .fullScreen
-                self.present(tabBarVC, animated: true)
-                // dummy
                 if bool {
-                    self.present(TabBarVC(), animated: true)
+                    let tabBarVC = TabBarVC()
+                    tabBarVC.modalPresentationStyle = .fullScreen
+                    self.present(tabBarVC, animated: true)
                 }
             }.disposed(by: disposeBag)
     }

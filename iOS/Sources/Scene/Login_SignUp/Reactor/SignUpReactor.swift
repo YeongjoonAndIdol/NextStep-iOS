@@ -67,8 +67,10 @@ extension SignUpReactor {
                 name: newState.name)))
             .subscribe { event in
                 switch event {
-                case .success:
-                    newState.isNavigate = true
+                case let .success(response):
+                    if response.statusCode == 200 {
+                        newState.isNavigate = true
+                    } else { print(response.statusCode) }
                 case .failure:
                     print("Error")
                 }
