@@ -14,6 +14,11 @@ class SelectSchoolVC: UIViewController {
         NextStapImage.middleSchoolImage.image,
         NextStapImage.highSchoolImage.image
     ]
+    private let schoolTypeString: [String] = [
+        "Elementary School",
+        "middle School",
+        "high school"
+    ]
 
     private let stackView = UIStackView().then {
         $0.axis = .horizontal
@@ -46,7 +51,10 @@ class SelectSchoolVC: UIViewController {
             }
             stackView.addArrangedSubview(view)
             button.rx.tap.bind {
-                self.delegate?.dismissSelectSchoolVC(self.schoolImage[count])
+                self.delegate?.dismissSelectSchoolVC(
+                    self.schoolImage[count],
+                    self.schoolTypeString[count]
+                )
                 self.dismiss(animated: true)
             }.disposed(by: disposeBag)
         }

@@ -1,10 +1,12 @@
 import UIKit
+import RxRelay
 
 protocol AddRoutineDelegate: AnyObject {
-    func dismissSelectSchoolVC(_ schoolImage: UIImage)
+    func dismissSelectSchoolVC(_ schoolImage: UIImage, _ type: String)
 }
 
 class AddRoutineVC: BaseVC<AddRoutineReactor> {
+    fileprivate var schoolType = PublishRelay<String>()
 
     private let titleTextField = UITextField().then {
         $0.textColor = NextStapColor.onSurfaceColor.color
@@ -175,7 +177,8 @@ extension AddRoutineVC: UITextViewDelegate {
 
 }
 extension AddRoutineVC: AddRoutineDelegate {
-    func dismissSelectSchoolVC(_ schoolImage: UIImage) {
+    func dismissSelectSchoolVC(_ schoolImage: UIImage, _ type: String) {
         schoolImageView.image = schoolImage
+        schoolType.accept(type)
     }
 }
