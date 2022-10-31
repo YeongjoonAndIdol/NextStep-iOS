@@ -54,9 +54,10 @@ extension LoginReactor {
         case let .setPassWord(password):
             newState.passWord = password
         case .login:
-            provider.rx.request(NextStapAPI.signIn(req: SigninRequestDTO(
+            NextStapAPI.signIn(req: SigninRequestDTO(
                 accountID: newState.id,
-                password: newState.passWord)))
+                password: newState.passWord))
+            .request()
             .subscribe { event in
                 switch event {
                 case .success(let response):

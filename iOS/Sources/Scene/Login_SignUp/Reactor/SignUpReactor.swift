@@ -61,16 +61,17 @@ extension SignUpReactor {
         case let .setName(name):
             newState.name = name
         case .signUp:
-            provider.rx.request(.signUp(req: .init(
+            NextStapAPI.signUp(req: .init(
                 accountID: newState.id,
                 password: newState.passWord,
-                name: newState.name)))
+                name: newState.name))
+            .request()
             .subscribe { event in
                 switch event {
                 case .success:
                     newState.isNavigate = true
-                case .failure:
-                    print("Error")
+                case .failure(let error):
+                    print(error)
                 }
             }.disposed(by: disposeBag)
         }
