@@ -54,6 +54,7 @@ extension LoginReactor {
         case let .setPassWord(password):
             newState.passWord = password
         case .login:
+            newState.isNavigate = true // dummy
             NextStapAPI.signIn(req: SigninRequestDTO(
                 accountID: newState.id,
                 password: newState.passWord))
