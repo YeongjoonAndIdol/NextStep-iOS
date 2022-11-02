@@ -16,8 +16,8 @@ class SelectSchoolVC: UIViewController {
     ]
     private let schoolTypeString: [String] = [
         "Elementary School",
-        "middle School",
-        "high school"
+        "Middle School",
+        "High School"
     ]
 
     private let stackView = UIStackView().then {
