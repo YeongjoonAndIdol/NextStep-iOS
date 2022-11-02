@@ -1,34 +1,44 @@
 import Foundation
 import ReactorKit
+import UIKit
+import Then
 
 class AddRoutineReactor: Reactor {
 
     private let disposeBag: DisposeBag = .init()
     let initialState: State
 
+    fileprivate let dFomatter = DateFormatter().then {
+        $0.dateFormat = "yyyy-MM-dd"
+    }
+
+    fileprivate let tFomatter = DateFormatter().then {
+        $0.dateFormat = "HH : mm"
+    }
+
     enum Action {
         case updateName(String)
-        case updateStartTime(String)
-        case updateEndTime(String)
-        case updateTime(String)
+        case updateStartTime(Date)
+        case updateEndTime(Date)
+        case updateTime(Date)
         case updateContent(String)
         case updateSchoolType(String)
         case nextButtonPress
     }
     enum Mutation {
         case setName(String)
-        case setStartTime(String)
-        case setEndTime(String)
-        case setTime(String)
+        case setStartTime(Date)
+        case setEndTime(Date)
+        case setTime(Date)
         case setContent(String)
         case setSchoolType(String)
         case nextButtonClick
     }
     struct State {
         var name: String = ""
-        var startTime: String = ""
-        var endTime: String = ""
-        var time: String = ""
+        var startTime: Date = Date()
+        var endTime: Date = Date()
+        var time: Date = Date()
         var content: String = ""
         var schoolType: String = ""
         var isNavigate: Bool = false
@@ -81,8 +91,8 @@ extension AddRoutineReactor {
         case .nextButtonClick:
             NextStapAPI.addQuest(req: AddQuestRequestDTO(
                 title: newState.name,
-                period: "\(newState.startTime)~\(newState.endTime)",
-                time: newState.time,
+                period: "\(dFomatter.string(from: newState.startTime))~\(dFomatter.string(from: newState.endTime))",
+                time: "\(tFomatter.string(from: newState.time))",
                 content: newState.content,
                 schoolType: newState.schoolType
                 )

@@ -6,7 +6,7 @@ protocol AddRoutineDelegate: AnyObject {
 }
 
 class AddRoutineVC: BaseVC<AddRoutineReactor> {
-    fileprivate var schoolType = PublishRelay<String>()
+    fileprivate let schoolType = PublishRelay<String>()
 
     private let titleTextField = UITextField().then {
         $0.textColor = NextStapColor.onSurfaceColor.color
@@ -14,16 +14,50 @@ class AddRoutineVC: BaseVC<AddRoutineReactor> {
         $0.font = .systemFont(ofSize: 22, weight: .regular)
     }
 
-    private let timeTextLabel = UILabel().then {
+    private let periodTextLabel = UILabel().then {
         $0.textColor = NextStapColor.textButtonDisabledColor.color
         $0.font = .systemFont(ofSize: 18, weight: .regular)
         $0.text = "기간"
+    }
+
+    private let timeTextLabel = UILabel().then {
+        $0.textColor = NextStapColor.textButtonDisabledColor.color
+        $0.font = .systemFont(ofSize: 18, weight: .regular)
+        $0.text = "시간"
+    }
+
+    private let startDatePicker = UIDatePicker().then {
+        $0.backgroundColor = .white
+        $0.tintColor = NextStapColor.onSurfaceColor.color
+        $0.preferredDatePickerStyle = .compact
+        $0.datePickerMode = .date
+        $0.locale = Locale(identifier: "ko-KR")
+        $0.timeZone = .autoupdatingCurrent
+    }
+
+    private let endDatePicker = UIDatePicker().then {
+        $0.backgroundColor = .white
+        $0.tintColor = NextStapColor.onSurfaceColor.color
+        $0.preferredDatePickerStyle = .compact
+        $0.datePickerMode = .date
+        $0.locale = Locale(identifier: "ko-KR")
+        $0.timeZone = .autoupdatingCurrent
+    }
+
+    private let timePicker = UIDatePicker().then {
+        $0.backgroundColor = .white
+        $0.tintColor = NextStapColor.onSurfaceColor.color
+        $0.preferredDatePickerStyle = .compact
+        $0.datePickerMode = .time
+        $0.locale = Locale(identifier: "ko-KR")
+        $0.timeZone = .autoupdatingCurrent
     }
 
     private let timaePicker = UIDatePicker().then {
         $0.backgroundColor = .white
         $0.tintColor = NextStapColor.onSurfaceColor.color
         $0.preferredDatePickerStyle = .compact
+        $0.datePickerMode = .date
         $0.locale = Locale(identifier: "ko-KR")
         $0.timeZone = .autoupdatingCurrent
     }
@@ -72,8 +106,11 @@ class AddRoutineVC: BaseVC<AddRoutineReactor> {
 
         [
             titleTextField,
+            periodTextLabel,
             timeTextLabel,
-            timaePicker,
+            startDatePicker,
+            endDatePicker,
+            timePicker,
             contentTextView,
             addButtonImage,
             addButton,
@@ -94,7 +131,73 @@ class AddRoutineVC: BaseVC<AddRoutineReactor> {
             attributes: [NSAttributedString.Key.foregroundColor: NextStapColor.textButtonDisabledColor.color,
                          NSAttributedString.Key.font: UIFont.systemFont(ofSize: 22, weight: .regular)]
         )
+    }
 
+    override func setLayout() {
+        titleTextField.snp.makeConstraints {
+            $0.top.equalTo(view.safeAreaLayoutGuide).offset(42)
+            $0.leading.trailing.equalTo(view).inset(40)
+            $0.height.equalTo(35)
+        }
+
+        periodTextLabel.snp.makeConstraints {
+            $0.top.equalTo(titleTextField.snp.bottom).offset(59)
+            $0.left.equalTo(40)
+            $0.height.equalTo(29)
+        }
+
+        timeTextLabel.snp.makeConstraints {
+            $0.top.equalTo(periodTextLabel.snp.bottom).offset(59)
+            $0.left.equalTo(40)
+            $0.height.equalTo(29)
+        }
+
+        endDatePicker.snp.makeConstraints {
+            $0.centerY.equalTo(periodTextLabel)
+            $0.right.equalTo(-40)
+        }
+
+        startDatePicker.snp.makeConstraints {
+            $0.centerY.equalTo(periodTextLabel)
+            $0.right.equalTo(endDatePicker.snp.left).offset(-10)
+        }
+
+        timePicker.snp.makeConstraints {
+            $0.centerY.equalTo(timeTextLabel)
+            $0.right.equalTo(-40)
+        }
+
+        contentTextView.snp.makeConstraints {
+            $0.leading.trailing.equalTo(view).inset(36)
+            $0.top.equalTo(timeTextLabel.snp.bottom).offset(60)
+            $0.bottom.equalTo(doneButton.snp.top).offset(-200)
+        }
+
+        addButtonImage.snp.makeConstraints {
+            $0.width.height.equalTo(20)
+            $0.top.equalTo(contentTextView.snp.bottom).offset(32)
+            $0.leading.equalTo(40)
+        }
+
+        schoolImageView.snp.makeConstraints {
+            $0.width.height.equalTo(100)
+            $0.leading.equalTo(40)
+            $0.top.equalTo(addButtonImage.snp.bottom).offset(20)
+        }
+
+        addButton.snp.makeConstraints {
+            $0.centerY.equalTo(addButtonImage)
+            $0.leading.equalTo(72)
+        }
+
+        doneButton.snp.makeConstraints {
+            $0.leading.trailing.equalTo(view).inset(16)
+            $0.bottom.equalTo(view.safeAreaLayoutGuide).offset(-32)
+            $0.height.equalTo(48)
+        }
+    }
+
+    override func bindView(reactor: AddRoutineReactor) {
         if #available(iOS 16.0, *) {
             addButton.rx.tap
                 .bind {
@@ -110,53 +213,91 @@ class AddRoutineVC: BaseVC<AddRoutineReactor> {
                     }
                 }.disposed(by: disposeBag)
         }
-
-        doneButton.rx.tap.bind {
-            self.navigationController?.pushViewController(AddQuestVC(reactor: AddQuestReactor()), animated: true)
-        }.disposed(by: disposeBag)
-
     }
 
-    override func setLayout() {
-        titleTextField.snp.makeConstraints {
-            $0.top.equalTo(view.safeAreaLayoutGuide).offset(42)
-            $0.leading.trailing.equalTo(view).inset(40)
-            $0.height.equalTo(35)
-        }
-        timeTextLabel.snp.makeConstraints {
-            $0.top.equalTo(titleTextField.snp.bottom).offset(59)
-            $0.left.equalTo(40)
-            $0.height.equalTo(29)
-        }
-        timaePicker.snp.makeConstraints {
-            $0.centerY.equalTo(timeTextLabel)
-            $0.right.equalTo(-40)
-        }
-        contentTextView.snp.makeConstraints {
-            $0.leading.trailing.equalTo(view).inset(36)
-            $0.top.equalTo(timeTextLabel.snp.bottom).offset(60)
-            $0.bottom.equalTo(doneButton.snp.top).offset(-200)
-        }
+    override func bindAction(reactor: AddRoutineReactor) {
+        doneButton.rx.tap
+            .map { Reactor.Action.nextButtonPress }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
 
-        addButtonImage.snp.makeConstraints {
-            $0.width.height.equalTo(20)
-            $0.top.equalTo(contentTextView.snp.bottom).offset(32)
-            $0.leading.equalTo(40)
-        }
-        schoolImageView.snp.makeConstraints {
-            $0.width.height.equalTo(100)
-            $0.leading.equalTo(40)
-            $0.top.equalTo(addButtonImage.snp.bottom).offset(20)
-        }
-        addButton.snp.makeConstraints {
-            $0.centerY.equalTo(addButtonImage)
-            $0.leading.equalTo(72)
-        }
-        doneButton.snp.makeConstraints {
-            $0.leading.trailing.equalTo(view).inset(16)
-            $0.bottom.equalTo(view.safeAreaLayoutGuide).offset(-32)
-            $0.height.equalTo(48)
-        }
+        startDatePicker.rx.date
+            .map { Reactor.Action.updateStartTime($0) }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+
+        endDatePicker.rx.date
+            .map { Reactor.Action.updateEndTime($0) }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+
+        timePicker.rx.date
+            .map { Reactor.Action.updateTime($0) }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+
+        titleTextField.rx.text
+            .map { Reactor.Action.updateName($0 ?? "") }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+
+        contentTextView.rx.text
+            .map { Reactor.Action.updateContent($0 ?? "") }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+
+        schoolType
+            .map { Reactor.Action.updateSchoolType($0) }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+    }
+
+    override func bindState(reactor: AddRoutineReactor) {
+        reactor.state
+            .map { $0.name }
+            .distinctUntilChanged()
+            .bind(to: titleTextField.rx.text)
+            .disposed(by: disposeBag)
+
+        reactor.state
+            .map { $0.schoolType }
+            .distinctUntilChanged()
+            .bind(to: schoolType)
+            .disposed(by: disposeBag)
+
+        reactor.state
+            .map { $0.startTime }
+            .distinctUntilChanged()
+            .bind(to: startDatePicker.rx.date)
+            .disposed(by: disposeBag)
+
+        reactor.state
+            .map { $0.endTime }
+            .distinctUntilChanged()
+            .bind(to: endDatePicker.rx.date)
+            .disposed(by: disposeBag)
+
+        reactor.state
+            .map { $0.time }
+            .distinctUntilChanged()
+            .bind(to: timePicker.rx.date)
+            .disposed(by: disposeBag)
+
+        reactor.state
+            .map { $0.content }
+            .distinctUntilChanged()
+            .filter { $0 != self.textViewPlaceHolder }
+            .bind(to: contentTextView.rx.text)
+            .disposed(by: disposeBag)
+
+        reactor.state
+            .map { $0.isNavigate }
+            .bind { bool in
+                if bool {
+                    self.navigationController?.pushViewController(
+                        AddQuestVC(reactor: AddQuestReactor()), animated: true)
+                }
+            }.disposed(by: disposeBag)
     }
 }
 
@@ -168,6 +309,7 @@ extension AddRoutineVC: UITextViewDelegate {
             textView.textColor = NextStapColor.onSurfaceColor.color
         }
     }
+
     func textViewDidEndEditing(_ textView: UITextView) {
         if textView.text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
             textView.text = textViewPlaceHolder
