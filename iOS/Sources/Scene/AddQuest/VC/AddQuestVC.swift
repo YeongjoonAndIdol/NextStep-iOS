@@ -5,8 +5,9 @@ protocol AddQuestDelegate: AnyObject {
 }
 
 class AddQuestVC: BaseVC<AddQuestReactor> {
-
+    var questID: String = ""
     var questArray: [CategoryModel] = []
+
     private let questTableView = UITableView().then {
         $0.backgroundColor = .clear
         $0.separatorStyle = .none
@@ -71,6 +72,7 @@ class AddQuestVC: BaseVC<AddQuestReactor> {
         if #available(iOS 16.0, *) {
             addbarButton.rx.tap.bind {
                 let writeQuestVC = WriteQuestVC()
+                writeQuestVC.questID = self.questID
                 if let sheet = writeQuestVC.sheetPresentationController {
                     sheet.detents = [.custom { _ in
                         return 700

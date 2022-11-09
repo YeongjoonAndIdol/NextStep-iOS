@@ -3,6 +3,7 @@ import RxSwift
 import RxRelay
 import SnapKit
 import Then
+import Moya
 
 class WriteQuestVC: UIViewController {
 
@@ -10,6 +11,9 @@ class WriteQuestVC: UIViewController {
     typealias NextStapImage = NextStapAsset.Assets
     private var disposeBag: DisposeBag = .init()
     private var categoryNumber = 0
+
+    var questID: String = ""
+    var typeString: String = ""
 
     private let titleTextIsDone = BehaviorSubject<Bool>(value: false)
     private let contentTextIsDone = BehaviorSubject<Bool>(value: false)
@@ -211,9 +215,26 @@ class WriteQuestVC: UIViewController {
             }.disposed(by: disposeBag)
 
         doneButton.rx.tap.bind {
-            self.appendQuestList(categoryNum: self.categoryNumber)
-            self.delegate?.dismissWriteQuestVC(self.questArray)
-            self.dismiss(animated: true)
+            NextStapAPI.addList(
+                questID: self.questID,
+                req: .init(
+                    title: (self.titleTextField.text!),
+                    content: self.contentTextView.text!,
+                    type: self.typeString
+                )
+            )
+            .request()
+            .subscribe { event in
+                switch event {
+                case .success(let response):
+                    print(response.statusCode)
+                    self.appendQuestList(categoryNum: self.categoryNumber)
+                    self.delegate?.dismissWriteQuestVC(self.questArray)
+                    self.dismiss(animated: true)
+                case .failure(let error):
+                    print(error)
+                }
+            }.disposed(by: self.disposeBag)
         }.disposed(by: disposeBag)
     }
 }

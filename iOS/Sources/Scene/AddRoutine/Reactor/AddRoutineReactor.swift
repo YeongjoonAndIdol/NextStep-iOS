@@ -89,6 +89,8 @@ extension AddRoutineReactor {
         case let .setSchoolType(schoolType):
             newState.schoolType = schoolType
         case .nextButtonClick:
+            newState.isNavigate = true
+
             NextStapAPI.addQuest(req: AddQuestRequestDTO(
                 title: newState.name,
                 period: "\(dFomatter.string(from: newState.startTime))~\(dFomatter.string(from: newState.endTime))",
