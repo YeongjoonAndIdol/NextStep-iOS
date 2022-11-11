@@ -133,13 +133,8 @@ class HomeVC: BaseVC<HomeReactor> {
         if #available(iOS 15.0, *) {
             achievementButton.rx.tap
                 .bind {
-                    let selectSchoolVC = DetailQuestVC()
-                    if let sheet = selectSchoolVC.sheetPresentationController {
-                        sheet.detents = [.medium(), .large()]
-                        sheet.prefersGrabberVisible = true
-                        sheet.preferredCornerRadius = 32
-                        self.present(selectSchoolVC, animated: true)
-                    }
+                    self.navigationController?.pushViewController(ReviewVC(), animated: true)
+                    
                 }.disposed(by: disposeBag)
         }
     }
