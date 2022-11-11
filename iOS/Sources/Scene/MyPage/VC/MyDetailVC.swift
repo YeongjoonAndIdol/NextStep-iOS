@@ -1,7 +1,9 @@
 import UIKit
 import WebKit
+import SnapKit
+import Then
 
-class MyPageVC: BaseVC<MyPageReactor>, WKNavigationDelegate, WKUIDelegate, WKScriptMessageHandler {
+class MyPageDetailVC: UIViewController, WKNavigationDelegate, WKUIDelegate, WKScriptMessageHandler {
     let webViewBackgroundView = UIView()
     var webView = WKWebView()
 
@@ -10,7 +12,8 @@ class MyPageVC: BaseVC<MyPageReactor>, WKNavigationDelegate, WKUIDelegate, WKScr
         load()
     }
 
-    override func addView() {
+    override func viewDidLoad() {
+        view.backgroundColor = NextStapAsset.Color.backGroundColor.color
         view.addSubview(webViewBackgroundView)
         webViewBackgroundView.snp.makeConstraints { $0.edges.equalTo(view.safeAreaLayoutGuide) }
         setWebView()
@@ -27,14 +30,13 @@ class MyPageVC: BaseVC<MyPageReactor>, WKNavigationDelegate, WKUIDelegate, WKScr
 
         contentController.add(self, name: "outLink")
         configuration.userContentController = contentController
-
-        webView.scrollView.isScrollEnabled = false
         webViewBackgroundView.addSubview(webView)
         webView.snp.makeConstraints { $0.edges.equalToSuperview() }
+
     }
 
     func load() {
-        let url = URL(string: "https://nextstep-front.vercel.app/mypage")
+        let url = URL(string: "https://nextstep-front.vercel.app/setting")
         let request = URLRequest(url: url!)
         webView.load(request)
     }
@@ -45,7 +47,12 @@ class MyPageVC: BaseVC<MyPageReactor>, WKNavigationDelegate, WKUIDelegate, WKScr
             // outLink
             print(message.name)
             if message.name == "outLink" {
-                self.navigationController?.pushViewController(MyPageDetailVC(), animated: true)
+                let sheet = UIAlertController(title: "로그아웃", message: "로그아웃 하시겠습니까??", preferredStyle: .actionSheet)
+                sheet.addAction(UIAlertAction(title: "취소", style: .destructive, handler: nil))
+                sheet.addAction(UIAlertAction(title: "로그아웃", style: .cancel, handler: { _ in
+                    print("yes 클릭")
+                }))
+                present(sheet, animated: true)
             }
         }
 

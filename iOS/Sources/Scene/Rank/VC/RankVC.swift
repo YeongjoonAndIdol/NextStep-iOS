@@ -1,7 +1,7 @@
 import UIKit
 import WebKit
 
-class RankVC: BaseVC<RankReactor> {
+class RankVC: BaseVC<RankReactor>, WKNavigationDelegate, WKUIDelegate {
     let webViewBackgroundView = UIView()
     var webView = WKWebView()
 
