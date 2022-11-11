@@ -1,19 +1,30 @@
-import Foundation
 import UIKit
 import WebKit
-import SnapKit
-import Then
+import RxSwift
 
-class ReviewVC: UIViewController, WKNavigationDelegate, WKUIDelegate, WKScriptMessageHandler {
+class AchievementVC: UIViewController, WKNavigationDelegate, WKUIDelegate {
+    var disposeBag: DisposeBag = .init()
     let webViewBackgroundView = UIView()
     var webView = WKWebView()
+
+    private let addbarButton = UIBarButtonItem(
+        image: UIImage(systemName: "book.closed"),
+        style: .plain,
+        target: AddQuestVC.self,
+        action: nil)
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         load()
     }
+
     override func viewDidLoad() {
-        navigationItem.title = "회고"
+        navigationItem.title = "업적"
+        navigationItem.rightBarButtonItem = addbarButton
+        addbarButton.rx.tap.bind {
+            self.navigationController?.pushViewController(ReviewVC(), animated: true)
+        }.disposed(by: disposeBag)
+
         view.backgroundColor = NextStapAsset.Color.backGroundColor.color
         view.addSubview(webViewBackgroundView)
         webViewBackgroundView.snp.makeConstraints { $0.edges.equalTo(view.safeAreaLayoutGuide) }
@@ -23,24 +34,15 @@ class ReviewVC: UIViewController, WKNavigationDelegate, WKUIDelegate, WKScriptMe
     func setWebView() {
         let contentController = WKUserContentController()
         let configuration = WKWebViewConfiguration()
-        configuration.userContentController = contentController
-
         webView = WKWebView(frame: .zero, configuration: configuration)
         configuration.userContentController = contentController
         webViewBackgroundView.addSubview(webView)
         webView.snp.makeConstraints { $0.edges.equalToSuperview() }
-
     }
 
     func load() {
-        let url = URL(string: "https://nextstep-front.vercel.app/review")
+        let url = URL(string: "https://nextstep-front.vercel.app/achievement")
         let request = URLRequest(url: url!)
         webView.load(request)
     }
-
-    func userContentController(_ userContentController: WKUserContentController,
-                               didReceive message: WKScriptMessage) {
-        print(message.name)
-    }
-
 }

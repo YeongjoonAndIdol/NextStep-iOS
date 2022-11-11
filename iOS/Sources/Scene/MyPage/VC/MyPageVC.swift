@@ -52,7 +52,7 @@ class MyPageVC: BaseVC<MyPageReactor>, WKNavigationDelegate, WKUIDelegate, WKScr
             if message.name == "editOutLink" {
                 let sheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
                 sheet.addAction(UIAlertAction(title: "수정", style: .default, handler: nil))
-                sheet.addAction(UIAlertAction(title: "삭제", style: .destructive, handler: nil))
+                sheet.addAction(UIAlertAction(title: "삭제", style: .cancel, handler: nil))
                 present(sheet, animated: true)
             }
         }
