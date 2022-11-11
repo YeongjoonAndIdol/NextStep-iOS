@@ -28,7 +28,7 @@ class MyPageDetailVC: UIViewController, WKNavigationDelegate, WKUIDelegate, WKSc
         webView.uiDelegate = self
         webView.navigationDelegate = self
 
-        contentController.add(self, name: "outLink")
+        contentController.add(self, name: "logOutLink")
         configuration.userContentController = contentController
         webViewBackgroundView.addSubview(webView)
         webView.snp.makeConstraints { $0.edges.equalToSuperview() }
@@ -44,16 +44,15 @@ class MyPageDetailVC: UIViewController, WKNavigationDelegate, WKUIDelegate, WKSc
     func userContentController(
         _ userContentController: WKUserContentController,
         didReceive message: WKScriptMessage) {
-            // outLink
-            print(message.name)
-            if message.name == "outLink" {
-                let sheet = UIAlertController(title: "로그아웃", message: "로그아웃 하시겠습니까??", preferredStyle: .actionSheet)
-                sheet.addAction(UIAlertAction(title: "취소", style: .destructive, handler: nil))
-                sheet.addAction(UIAlertAction(title: "로그아웃", style: .cancel, handler: { _ in
-                    print("yes 클릭")
+            if message.name == "logOutLink" {
+                let sheet = UIAlertController(title: "로그아웃", message: "로그아웃 하시겠습니까??", preferredStyle: .alert)
+                sheet.addAction(UIAlertAction(title: "로그아웃", style: .destructive, handler: { _ in
+                    let loginVC = LoginVC(reactor: LoginReactor())
+                    loginVC.modalPresentationStyle = .fullScreen
+                    self.present(loginVC, animated: true)
                 }))
+                sheet.addAction(UIAlertAction(title: "취소", style: .cancel, handler: nil))
                 present(sheet, animated: true)
             }
         }
-
 }
