@@ -133,8 +133,7 @@ class HomeVC: BaseVC<HomeReactor> {
         if #available(iOS 15.0, *) {
             achievementButton.rx.tap
                 .bind {
-                    self.navigationController?.pushViewController(ReviewVC(), animated: true)
-                    
+                    self.navigationController?.pushViewController(AchievementVC(), animated: true)
                 }.disposed(by: disposeBag)
         }
     }
