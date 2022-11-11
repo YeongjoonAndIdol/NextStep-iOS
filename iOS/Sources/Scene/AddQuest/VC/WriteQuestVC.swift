@@ -215,6 +215,10 @@ class WriteQuestVC: UIViewController {
             }.disposed(by: disposeBag)
 
         doneButton.rx.tap.bind {
+            self.appendQuestList(categoryNum: self.categoryNumber)
+            self.delegate?.dismissWriteQuestVC(self.questArray)
+            self.dismiss(animated: true)
+
             NextStapAPI.addList(
                 questID: self.questID,
                 req: .init(
