@@ -160,34 +160,6 @@ class LoginVC: BaseVC<LoginReactor> {
             self.navigationController?.pushViewController(SignUpVC(reactor: SignUpReactor()), animated: true)
         }.disposed(by: disposeBag)
 
-//        idTextFiled.rx.text.bind {
-//            if $0 == "" {
-//                self.idTextIsDone.onNext(false)
-//            } else {
-//                self.idTextIsDone.onNext(true)
-//            }
-//        }.disposed(by: disposeBag)
-//
-//        passwordTextFiled.rx.text.bind {
-//            if $0 == "" {
-//                self.passwordTextIsDone.onNext(false)
-//            } else {
-//                self.passwordTextIsDone.onNext(true)
-//            }
-//        }.disposed(by: disposeBag)
-//
-//        Observable.combineLatest(idTextIsDone,
-//                                 passwordTextIsDone) {$0 && $1 }
-//            .bind {
-//                if $0 == true {
-//                    self.loginButton.backgroundColor = NextStapColor.mainColor.color
-//                    self.loginButton.isEnabled = true
-//                } else {
-//                    self.loginButton.backgroundColor = NextStapColor.buttonDisabledColor.color
-//                    self.loginButton.isEnabled = false
-//                }
-//            }.disposed(by: disposeBag)
-
     }
 
     override func bindAction(reactor: LoginReactor) {
