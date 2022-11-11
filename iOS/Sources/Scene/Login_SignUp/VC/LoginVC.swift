@@ -21,7 +21,7 @@ class LoginVC: BaseVC<LoginReactor> {
         $0.setTitleColor(NextStapColor.surfaceColor.color, for: .normal)
         $0.setTitle("로그인", for: .normal)
         $0.titleLabel?.font = .systemFont(ofSize: 16, weight: .semibold)
-        $0.backgroundColor = NextStapColor.buttonDisabledColor.color
+        $0.backgroundColor = NextStapColor.mainColor.color
         $0.layer.cornerRadius = 10
     }
 
@@ -62,6 +62,8 @@ class LoginVC: BaseVC<LoginReactor> {
             view.addSubview($0)
         }
 
+         idTextFiled.text = "thisIsID1234"
+         passwordTextFiled.text = "examplepassword1212"
          idTextFiledBackView.addSubview(idTextFiled)
          passwordTextFiledBackView.addSubview(passwordTextFiled)
          signInGoogleButton.addSubview(googleLogo)
@@ -158,33 +160,33 @@ class LoginVC: BaseVC<LoginReactor> {
             self.navigationController?.pushViewController(SignUpVC(reactor: SignUpReactor()), animated: true)
         }.disposed(by: disposeBag)
 
-        idTextFiled.rx.text.bind {
-            if $0 == "" {
-                self.idTextIsDone.onNext(false)
-            } else {
-                self.idTextIsDone.onNext(true)
-            }
-        }.disposed(by: disposeBag)
-
-        passwordTextFiled.rx.text.bind {
-            if $0 == "" {
-                self.passwordTextIsDone.onNext(false)
-            } else {
-                self.passwordTextIsDone.onNext(true)
-            }
-        }.disposed(by: disposeBag)
-
-        Observable.combineLatest(idTextIsDone,
-                                 passwordTextIsDone) {$0 && $1 }
-            .bind {
-                if $0 == true {
-                    self.loginButton.backgroundColor = NextStapColor.mainColor.color
-                    self.loginButton.isEnabled = true
-                } else {
-                    self.loginButton.backgroundColor = NextStapColor.buttonDisabledColor.color
-                    self.loginButton.isEnabled = false
-                }
-            }.disposed(by: disposeBag)
+//        idTextFiled.rx.text.bind {
+//            if $0 == "" {
+//                self.idTextIsDone.onNext(false)
+//            } else {
+//                self.idTextIsDone.onNext(true)
+//            }
+//        }.disposed(by: disposeBag)
+//
+//        passwordTextFiled.rx.text.bind {
+//            if $0 == "" {
+//                self.passwordTextIsDone.onNext(false)
+//            } else {
+//                self.passwordTextIsDone.onNext(true)
+//            }
+//        }.disposed(by: disposeBag)
+//
+//        Observable.combineLatest(idTextIsDone,
+//                                 passwordTextIsDone) {$0 && $1 }
+//            .bind {
+//                if $0 == true {
+//                    self.loginButton.backgroundColor = NextStapColor.mainColor.color
+//                    self.loginButton.isEnabled = true
+//                } else {
+//                    self.loginButton.backgroundColor = NextStapColor.buttonDisabledColor.color
+//                    self.loginButton.isEnabled = false
+//                }
+//            }.disposed(by: disposeBag)
 
     }
 

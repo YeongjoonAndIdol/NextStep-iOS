@@ -15,7 +15,7 @@ class HomeReactor: Reactor {
         case fetchQuestList
     }
     struct State {
-        var progress: Int = 0
+        var progress: Int = 50
     }
 
     init() {
