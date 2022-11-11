@@ -6,7 +6,16 @@ import Moya
 import RxMoya
 
 class AllQuestVC: UIViewController {
-    fileprivate var questList: [SingleQuestDTO] = []
+    fileprivate var questList: [SingleQuestDTO] = [
+        .init(id: "", name: "일어나서 물 한잔 마시기", isCompleted: false),
+        .init(id: "", name: "길에 떨어진 쓰래기 하나 줍기", isCompleted: true),
+        .init(id: "", name: "1분 명상하기", isCompleted: false),
+        .init(id: "", name: "1시간 이상 집중해서 공부하기", isCompleted: false),
+        .init(id: "", name: "친구들에게 비속어 사용하지 않기", isCompleted: true),
+        .init(id: "", name: "영단어 10개 모두 외우기", isCompleted: true),
+        .init(id: "", name: "수학 문제 한문제 이상 풀기", isCompleted: true),
+        .init(id: "", name: "9시 이전에 취침 준비 완료하기", isCompleted: false)
+    ]
     private let provider = MoyaProvider<NextStapAPI>()
     private let disposeBag: DisposeBag = .init()
 
@@ -32,7 +41,7 @@ class AllQuestVC: UIViewController {
         }
 
         getSchoolList()
-        titleLabel.text = "전체 퀘스트 | - 개"
+        titleLabel.text = "전체 퀘스트 | 8 개"
 
         tableView.delegate = self
         tableView.dataSource = self

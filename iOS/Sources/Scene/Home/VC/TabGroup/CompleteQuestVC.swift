@@ -6,7 +6,12 @@ import Moya
 import RxMoya
 
 class CompleteQuestVC: UIViewController {
-    fileprivate var questList: [SingleQuestDTO] = []
+    fileprivate var questList: [SingleQuestDTO] = [
+        .init(id: "", name: "길에 떨어진 쓰래기 하나 줍기", isCompleted: true),
+        .init(id: "", name: "친구들에게 비속어 사용하지 않기", isCompleted: true),
+        .init(id: "", name: "영단어 10개 모두 외우기", isCompleted: true),
+        .init(id: "", name: "수학 문제 한문제 이상 풀기", isCompleted: true)
+    ]
     private let provider = MoyaProvider<NextStapAPI>()
     private let disposeBag: DisposeBag = .init()
 
@@ -29,7 +34,7 @@ class CompleteQuestVC: UIViewController {
         ].forEach {
             view.addSubview($0)
         }
-        titleLabel.text = "완료 퀘스트 | - 개"
+        titleLabel.text = "완료 퀘스트 | 4 개"
         getSchoolList()
         tableView.delegate = self
         tableView.dataSource = self
