@@ -8,6 +8,32 @@ class DetailQuestVC: UIViewController {
     typealias NextStapColor = NextStapAsset.Color
     typealias NextStapImage = NextStapAsset.Assets
     var disposeBag: DisposeBag = .init()
+    var questArray: [CategoryModel] = [
+        .init(title: "한강 공원 뛰기",
+              content: "체지방이 줄고 근육량이 늘면서 체격이 좋아질 뿐만 아니라 바이러스로부터 견뎌낼 수 있는 방어 체력이 향상됩니다.",
+              categoryString: "운동",
+              categoryEnum: "",
+              categoryImage: NextStapAsset.Assets.small1.image,
+              categoryColor: NextStapAsset.Color.mainColor.color),
+        .init(title: "수학 문제 풀기",
+              content: "기본적으로 수학에 대한 지식이 풍부해지고, 모자란 창의성과 유연한 사고,다양성과 순발력을 키워주는 효과가 강합니다.",
+              categoryString: "공부",
+              categoryEnum: "",
+              categoryImage: NextStapAsset.Assets.small5.image,
+              categoryColor: NextStapAsset.Color.subColor4.color),
+        .init(title: "일어나서 물 한잔 마시기",
+              content: "아침에 일어나서 물을 마시게 된다면 머리도 빨리 돌아가고 과학적으로도 몸에 좋습니다. ",
+              categoryString: "생활패턴",
+              categoryEnum: "",
+              categoryImage: NextStapAsset.Assets.small3.image,
+              categoryColor: NextStapAsset.Color.subColor1.color),
+        .init(title: "그림 그리기",
+              content: "스트레스를 줄일 수 있다. 종이에 연필로 그림을 그리는 것은 자신을 옭아맨 생각에서 해방되는 기회를 만들어 줍니다.. ",
+              categoryString: "취미",
+              categoryEnum: "",
+              categoryImage: NextStapAsset.Assets.small4.image,
+              categoryColor: NextStapAsset.Color.subColor3.color)
+    ]
 
     private let titleTextLabel = UILabel().then {
         $0.textColor = NextStapColor.mainColor.color
@@ -62,6 +88,9 @@ class DetailQuestVC: UIViewController {
         ].forEach {
             view.addSubview($0)
         }
+        questTableView.delegate = self
+        questTableView.dataSource = self
+        questTableView.reloadData()
     }
     func setLayout() {
         titleTextLabel.snp.makeConstraints {
@@ -105,6 +134,22 @@ class DetailQuestVC: UIViewController {
         doneBackView.makeBackViewShadows()
         // dummy data
         titleTextLabel.text = "서울대생의 하루 루틴"
-        heartCountLabel.text = "434"
+        heartCountLabel.text = "200"
+    }
+}
+extension DetailQuestVC: UITableViewDelegate, UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return questArray.count
+    }
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = (tableView.dequeueReusableCell(
+            withIdentifier: "addQuestListCell") as? AddQuestListCell)!
+        let content = questArray[indexPath.row]
+        cell.categoryImage.image = content.categoryImage
+        cell.categorytextLabel.text = content.categoryString
+        cell.questTitleLabel.text = content.title
+        cell.contentTextLabel.text = content.content
+        cell.leftBar.backgroundColor = content.categoryColor
+        return cell
     }
 }

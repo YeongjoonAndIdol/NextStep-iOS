@@ -85,8 +85,9 @@ class AddQuestVC: BaseVC<AddQuestReactor> {
                 }
             }.disposed(by: disposeBag)
         }
+
         doneButton.rx.tap.bind {
-            print(self.questArray)
+            self.navigationController?.popToRootViewController(animated: true)
         }.disposed(by: disposeBag)
 
     }

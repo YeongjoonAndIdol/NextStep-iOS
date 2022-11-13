@@ -54,24 +54,7 @@ extension LoginReactor {
         case let .setPassWord(password):
             newState.passWord = password
         case .login:
-            newState.isNavigate = true // dummy
-            NextStapAPI.signIn(req: SigninRequestDTO(
-                accountID: newState.id,
-                password: newState.passWord))
-            .request()
-            .subscribe { event in
-                switch event {
-                case .success(let response):
-
-                    if let data = try? JSONDecoder().decode(TokenResponseDTO.self, from: response.data) {
-                        KeyChain.create(key: KeyChainDTO.accessToken, token: data.accessToken)
-                        KeyChain.create(key: KeyChainDTO.refreshToken, token: data.refreshToken)
-                        newState.isNavigate = true
-                    }
-                case .failure(let error):
-                    print(error)
-                }
-            }.disposed(by: disposeBag)
+            break
         }
         return newState
     }

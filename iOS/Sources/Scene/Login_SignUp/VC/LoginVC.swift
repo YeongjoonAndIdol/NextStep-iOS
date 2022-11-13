@@ -62,8 +62,8 @@ class LoginVC: BaseVC<LoginReactor> {
             view.addSubview($0)
         }
 
-         idTextFiled.text = "thisIsID1234"
-         passwordTextFiled.text = "examplepassword1212"
+         idTextFiled.text = ""
+         passwordTextFiled.text = ""
          idTextFiledBackView.addSubview(idTextFiled)
          passwordTextFiledBackView.addSubview(passwordTextFiled)
          signInGoogleButton.addSubview(googleLogo)
@@ -164,8 +164,33 @@ class LoginVC: BaseVC<LoginReactor> {
 
     override func bindAction(reactor: LoginReactor) {
         loginButton.rx.tap
-            .map { Reactor.Action.loginButtonPress }
-            .bind(to: reactor.action)
+            .bind {
+                NextStapAPI.signIn(req: SigninRequestDTO(
+                    accountID: self.idTextFiled.text!,
+                    password: self.passwordTextFiled.text!))
+                .request()
+                .subscribe { event in
+                    switch event {
+                    case .success(let response):
+                        let example1VC = BaseNC(rootViewController: Example1VC())
+                        example1VC.modalPresentationStyle = .fullScreen
+                         self.present(example1VC, animated: true)
+                        if let data = try? JSONDecoder().decode(TokenResponseDTO.self, from: response.data) {
+                            KeyChain.create(key: KeyChainDTO.accessToken, token: data.accessToken)
+                            KeyChain.create(key: KeyChainDTO.refreshToken, token: data.refreshToken)
+                        }
+                    case .failure(let error):
+                        print(error)
+                        let sheet = UIAlertController(
+                            title: "Login 실폐",
+                            message: "아이디 비밀번호가 일치하지 않습니다.",
+                            preferredStyle: .alert)
+                        sheet.addAction(UIAlertAction(title: "확인", style: .cancel, handler: nil))
+                        self.present(sheet, animated: true)
+                    }
+                }.disposed(by: self.disposeBag)
+
+            }
             .disposed(by: disposeBag)
 
         idTextFiled.rx.text
@@ -195,10 +220,11 @@ class LoginVC: BaseVC<LoginReactor> {
         reactor.state
             .map { $0.isNavigate }
             .bind { bool in
+                print(bool)
                 if bool {
-                    let tabBarVC = TabBarVC()
-                    tabBarVC.modalPresentationStyle = .fullScreen
-                     self.present(tabBarVC, animated: true)
+                    let example1VC = BaseNC(rootViewController: Example1VC())
+                    example1VC.modalPresentationStyle = .fullScreen
+                     self.present(example1VC, animated: true)
                 }
             }.disposed(by: disposeBag)
     }

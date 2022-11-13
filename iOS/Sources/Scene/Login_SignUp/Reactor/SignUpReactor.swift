@@ -61,6 +61,8 @@ extension SignUpReactor {
         case let .setName(name):
             newState.name = name
         case .signUp:
+            newState.isNavigate = true
+
             NextStapAPI.signUp(req: .init(
                 accountID: newState.id,
                 password: newState.passWord,

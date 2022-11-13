@@ -30,7 +30,7 @@ class WriteRetrospectVC: UIViewController {
 
     private let doneButton = UIButton().then {
         $0.setTitleColor(NextStapColor.surfaceColor.color, for: .normal)
-        $0.setTitle("루틴 사용하기", for: .normal)
+        $0.setTitle("작성하기", for: .normal)
         $0.titleLabel?.font = .systemFont(ofSize: 16, weight: .semibold)
         $0.backgroundColor = NextStapColor.mainColor.color
         $0.layer.cornerRadius = 10
@@ -52,11 +52,14 @@ class WriteRetrospectVC: UIViewController {
 
     override func viewDidLoad() {
         self.navigationItem.title = "회고 작성"
-        dateLabel.text = "2022.9.15 (목)"
+        dateLabel.text = "2022.11.12 (토)"
         practiceRateLabel.text = "3/5"
         view.backgroundColor = NextStapColor.backGroundColor.color
         contentTextView.text = textViewPlaceHolder
         contentTextView.delegate = self
+        doneButton.rx.tap.bind {
+            self.navigationController?.popViewController(animated: true)
+        }.disposed(by: disposeBag)
 
         [
             dateLabel,

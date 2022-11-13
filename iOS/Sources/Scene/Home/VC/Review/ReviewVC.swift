@@ -23,12 +23,15 @@ class ReviewVC: UIViewController, WKNavigationDelegate, WKUIDelegate, WKScriptMe
     func setWebView() {
         let contentController = WKUserContentController()
         let configuration = WKWebViewConfiguration()
+        configuration.userContentController = contentController
 
         webView = WKWebView(frame: .zero, configuration: configuration)
         webView.uiDelegate = self
         webView.navigationDelegate = self
 
+        contentController.add(self, name: "makeOutLink")
         contentController.add(self, name: "outLink")
+
         configuration.userContentController = contentController
         webViewBackgroundView.addSubview(webView)
         webView.snp.makeConstraints { $0.edges.equalToSuperview() }
@@ -43,7 +46,8 @@ class ReviewVC: UIViewController, WKNavigationDelegate, WKUIDelegate, WKScriptMe
 
     func userContentController(_ userContentController: WKUserContentController,
                                didReceive message: WKScriptMessage) {
-        if message.name == "outLink" {
+        print(message.name)
+        if message.name == "makeOutLink" {
             self.navigationController?.pushViewController(WriteRetrospectVC(), animated: true)
         }
     }

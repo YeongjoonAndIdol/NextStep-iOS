@@ -9,7 +9,7 @@ public struct SigninRequestDTO: Encodable {
         self.password = password
     }
     enum CodingKeys: String, CodingKey {
-        case id = "account_id"
+        case id = "accountId"
         case password
     }
 }

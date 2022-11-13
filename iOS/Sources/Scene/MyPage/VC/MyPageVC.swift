@@ -25,8 +25,8 @@ class MyPageVC: BaseVC<MyPageReactor>, WKNavigationDelegate, WKUIDelegate, WKScr
         webView.uiDelegate = self
         webView.navigationDelegate = self
 
-        contentController.add(self, name: "outLink")
         contentController.add(self, name: "editOutLink")
+        contentController.add(self, name: "outLink")
 
         configuration.userContentController = contentController
 
@@ -46,15 +46,14 @@ class MyPageVC: BaseVC<MyPageReactor>, WKNavigationDelegate, WKUIDelegate, WKScr
         didReceive message: WKScriptMessage) {
             // outLink
             print(message.name)
-            if message.name == "outLink" {
+            if message.name == "editOutLink" {
                 self.navigationController?.pushViewController(MyPageDetailVC(), animated: true)
             }
-            if message.name == "editOutLink" {
+            if message.name == "outLink" {
                 let sheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
                 sheet.addAction(UIAlertAction(title: "수정", style: .default, handler: nil))
                 sheet.addAction(UIAlertAction(title: "삭제", style: .cancel, handler: nil))
                 present(sheet, animated: true)
             }
         }
-
 }

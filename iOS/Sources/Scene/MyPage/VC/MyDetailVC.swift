@@ -47,7 +47,7 @@ class MyPageDetailVC: UIViewController, WKNavigationDelegate, WKUIDelegate, WKSc
             if message.name == "logOutLink" {
                 let sheet = UIAlertController(title: "로그아웃", message: "로그아웃 하시겠습니까??", preferredStyle: .alert)
                 sheet.addAction(UIAlertAction(title: "로그아웃", style: .destructive, handler: { _ in
-                    let loginVC = LoginVC(reactor: LoginReactor())
+                    let loginVC = BaseNC(rootViewController: LoginVC(reactor: LoginReactor()))
                     loginVC.modalPresentationStyle = .fullScreen
                     self.present(loginVC, animated: true)
                 }))
